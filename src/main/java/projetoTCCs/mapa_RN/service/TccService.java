@@ -3,6 +3,7 @@ package projetoTCCs.mapa_RN.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projetoTCCs.mapa_RN.model.Tcc;
+import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
 import projetoTCCs.mapa_RN.repository.TccRepository;
 
 import java.util.HashMap;
@@ -19,8 +20,20 @@ public class TccService {
         return repository.findByMunicipioContainingIgnoreCase(municipio);
     }
 
-    public Tcc cadastrar(Tcc tcc) {
-        return repository.save(tcc);
+    public Tcc cadastrar(RequestTccDTO dados) {
+        Tcc novoTcc = new Tcc();
+
+        novoTcc.setDiscente(dados.discente().toUpperCase());
+        novoTcc.setTitulo(dados.titulo().toUpperCase());
+        novoTcc.setOrientador(dados.orientador().toUpperCase());
+        novoTcc.setMunicipio(dados.municipio().toUpperCase());
+        novoTcc.setExaminador1(dados.examinador1().toUpperCase());
+        novoTcc.setExaminador2(dados.examinador2().toUpperCase());
+
+        novoTcc.setEmail(dados.email());
+        novoTcc.setDataDefesa(dados.dataDefesa());
+
+        return repository.save(novoTcc);
     }
 
     public List<Tcc> listarTodos() {

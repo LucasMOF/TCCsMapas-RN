@@ -1,8 +1,10 @@
 package projetoTCCs.mapa_RN.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import projetoTCCs.mapa_RN.model.Tcc;
+import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
 import projetoTCCs.mapa_RN.service.TccService;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class TccController {
 
     // Cadastro manual (Módulo próprio futuro)
     @PostMapping
-    public Tcc cadastrar(@RequestBody Tcc tcc) {
-        return service.cadastrar(tcc);
+    public Tcc cadastrar(@RequestBody @Validated RequestTccDTO dados) {
+        return service.cadastrar(dados);
     }
 }

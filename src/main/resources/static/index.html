@@ -1,154 +1,173 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de TCCs - RN</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Sistema Mapa RN - Gestão de TCCs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; }
-        .stats-card { border-left: 5px solid #0d6efd; }
-        .ranking-card { border-left: 5px solid #198754; }
-        #map-placeholder { background: #e9ecef; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 2px dashed #ccc; }
+        body { background-color: #f0f2f5; padding: 20px; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header-section { background: #004a99; color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .btn-save { background-color: #28a745; color: white; border: none; }
+        .btn-save:hover { background-color: #218838; color: white; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <span class="navbar-brand mb-0 h1">📍 Mapa de TCCs - Rio Grande do Norte</span>
-    </div>
-</nav>
-
 <div class="container">
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card stats-card shadow-sm p-3 mb-3">
-                <h6 class="text-muted">Total de TCCs</h6>
-                <h2 id="total-tccs">0</h2>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card ranking-card shadow-sm p-3 mb-3">
-                <h6 class="text-muted">Top Orientadores</h6>
-                <div id="lista-orientadores" class="d-flex flex-wrap gap-2">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm p-4 mb-4">
-        <h5>Cadastrar Novo TCC</h5>
-        <div class="row g-3">
-            <div class="col-md-2"><input type="number" id="cadId" class="form-control" placeholder="ID"></div>
-            <div class="col-md-5"><input type="text" id="cadDiscente" class="form-control" placeholder="Nome do Aluno"></div>
-            <div class="col-md-5"><input type="text" id="cadOrientador" class="form-control" placeholder="Orientador"></div>
-            <div class="col-md-9"><input type="text" id="cadTitulo" class="form-control" placeholder="Título do Trabalho"></div>
-            <div class="col-md-3"><input type="text" id="cadMunicipio" class="form-control" placeholder="Município"></div>
-            <div class="col-12"><button class="btn btn-success w-100" onclick="executarCadastro()">Cadastrar no Sistema</button></div>
-        </div>
+    <div class="header-section text-center">
+        <h1>Mapeamento de TCCs - Rio Grande do Norte</h1>
+        <p class="mb-0">Cadastro e Consulta de Trabalhos Acadêmicos</p>
     </div>
 
     <div class="row">
-        <div class="col-md-5">
-            <div class="card shadow-sm p-4 mb-4">
-                <h5>Busca por Mapa</h5>
-                <div class="input-group mb-3">
-                    <input type="text" id="municipioInput" class="form-control" placeholder="Digite o município">
-                    <button class="btn btn-primary" onclick="buscarTccsPorMunicipio()">Buscar</button>
-                </div>
-                <div id="map-placeholder">
-                    <p class="text-muted">[ Espaço para o Mapa do RN ]</p>
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-white font-weight-bold"><strong>Novo Registro</strong></div>
+                <div class="card-body">
+                    <form id="formTcc">
+                        <div class="mb-2">
+                            <label class="form-label small">Título do TCC</label>
+                            <input type="text" id="titulo" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Nome do Discente</label>
+                            <input type="text" id="discente" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">E-mail</label>
+                            <input type="email" id="email" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Orientador(a)</label>
+                            <input type="text" id="orientador" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <label class="form-label small">Examinador 1</label>
+                                <input type="text" id="examinador1" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label small">Examinador 2</label>
+                                <input type="text" id="examinador2" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-2">
+                                <label class="form-label small">Município</label>
+                                <input type="text" id="municipio" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label small">Data Defesa (String)</label>
+                                <input type="text" id="dataDefesa" class="form-control form-control-sm" placeholder="dd/mm/aaaa" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-save w-100">Cadastrar TCC</button>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-7">
-            <div class="card shadow-sm p-4">
-                <h5>Resultados</h5>
-                <table class="table table-hover mt-2">
-                    <thead class="table-light">
-                    <tr>
-                        <th>Discente</th>
-                        <th>Título</th>
-                        <th>Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tabela-corpo"></tbody>
-                </table>
+        <div class="col-lg-8">
+            <div class="card p-3 mb-3">
+                <div class="input-group">
+                    <input type="text" id="buscaMunicipio" class="form-control" placeholder="Buscar por Município (ex: Angicos)">
+                    <button class="btn btn-primary" onclick="buscarPorCidade()">Filtrar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Discente</th>
+                            <th>Título</th>
+                            <th>Município</th>
+                            <th>Data</th>
+                            <th>Orientador</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabelaCorpo">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    const API_URL = 'http://localhost:8080/api/tccs';
+    const API_URL = '/api/tccs';
 
-    async function carregarEstatisticas() {
+    // FUNÇÃO PARA BUSCAR (Usa o seu endpoint /api/tccs/busca?municipio=X)
+    async function buscarPorCidade() {
+        const cidade = document.getElementById('buscaMunicipio').value;
         try {
-            const response = await fetch(`${API_URL}/estatisticas`);
-            const data = await response.json();
+            const response = await fetch(`${API_URL}/busca?municipio=${encodeURIComponent(cidade)}`);
+            const dados = await response.json();
 
-            // Atualiza total
-            document.getElementById('total-tccs').innerText = data.totalTccs;
+            const corpo = document.getElementById('tabelaCorpo');
+            corpo.innerHTML = '';
 
-            // Atualiza Ranking de Orientadores
-            const rankingDiv = document.getElementById('lista-orientadores');
-            rankingDiv.innerHTML = '';
-            data.porProfessor.slice(0, 5).forEach(prof => {
-                rankingDiv.innerHTML += `<span class="badge bg-light text-dark border p-2">
-                    ${prof[0]}: <strong>${prof[1]}</strong></span>`;
+            dados.forEach(tcc => {
+                corpo.innerHTML += `
+                    <tr>
+                        <td><strong>${tcc.discente}</strong><br><small class="text-muted">${tcc.email}</small></td>
+                        <td>${tcc.titulo}</td>
+                        <td><span class="badge bg-info text-dark">${tcc.municipio}</span></td>
+                        <td>${tcc.dataDefesa}</td>
+                        <td>${tcc.orientador}</td>
+                    </tr>
+                `;
             });
-        } catch (error) { console.error("Erro estatísticas:", error); }
+        } catch (error) {
+            console.error("Erro na busca:", error);
+        }
     }
 
-    async function buscarTccsPorMunicipio() {
-        const municipio = document.getElementById('municipioInput').value;
-        const tabela = document.getElementById('tabela-corpo');
-        tabela.innerHTML = '<tr><td colspan="3" class="text-center">Buscando...</td></tr>';
+    // FUNÇÃO PARA CADASTRAR (Envia o JSON no formato do seu RequestTccDTO)
+    document.getElementById('formTcc').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-        try {
-            const response = await fetch(`${API_URL}/busca?municipio=${municipio}`);
-            const tccs = await response.json();
-            tabela.innerHTML = '';
-            if (tccs.length === 0) {
-                tabela.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Nada encontrado.</td></tr>';
-                return;
-            }
-            tccs.forEach(tcc => {
-                tabela.innerHTML += `<tr>
-                    <td>${tcc.discente}</td>
-                    <td class="small">${tcc.titulo}</td>
-                    <td><button class="btn btn-sm btn-outline-success" onclick="alert('Download ID: ${tcc.id}')">💾</button></td>
-                </tr>`;
-            });
-        } catch (error) { console.error("Erro busca:", error); }
-    }
-
-    async function executarCadastro() {
-        const novoTcc = {
-            id: document.getElementById('cadId').value,
-            discente: document.getElementById('cadDiscente').value,
-            titulo: document.getElementById('cadTitulo').value,
-            orientador: document.getElementById('cadOrientador').value,
-            municipio: document.getElementById('cadMunicipio').value
+        const payload = {
+            titulo: document.getElementById('titulo').value,
+            discente: document.getElementById('discente').value,
+            email: document.getElementById('email').value,
+            orientador: document.getElementById('orientador').value,
+            examinador1: document.getElementById('examinador1').value,
+            examinador2: document.getElementById('examinador2').value,
+            municipio: document.getElementById('municipio').value,
+            dataDefesa: document.getElementById('dataDefesa').value
         };
 
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(novoTcc)
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
                 alert("TCC cadastrado com sucesso!");
-                carregarEstatisticas(); // Atualiza contador e ranking
+                document.getElementById('formTcc').reset();
+                buscarPorCidade(); // Atualiza a lista
+            } else {
+                const erro = await response.json();
+                alert("Erro na validação: " + JSON.stringify(erro));
             }
-        } catch (error) { alert("Erro ao cadastrar."); }
-    }
+        } catch (error) {
+            console.error("Erro no cadastro:", error);
+        }
+    });
 
-    carregarEstatisticas();
+    // Carregar algo ao iniciar (opcional)
+    window.onload = () => {
+        document.getElementById('buscaMunicipio').value = '';
+        buscarPorCidade();
+    };
 </script>
+
 </body>
 </html>

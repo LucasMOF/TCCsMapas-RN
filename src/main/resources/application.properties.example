@@ -1,0 +1,11 @@
+spring.application.name=mapa-RN
+
+spring.datasource.url=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+spring.datasource.username=postgres.sjuvubkjelfqugeceyta
+spring.datasource.password=SUA_SENHA_AQUI
+
+# Configurações adicionais para manter a conexão estável
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.hikari.maximum-pool-size=5
+spring.datasource.hikari.minimum-idle=2

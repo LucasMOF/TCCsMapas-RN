@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import projetoTCCs.mapa_RN.model.Tcc;
 import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
 import projetoTCCs.mapa_RN.service.TccService;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.util.JSONPObject;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/tccs")

@@ -1,7 +1,9 @@
 package projetoTCCs.mapa_RN.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.time.LocalDate;
 
 @Entity
@@ -14,10 +16,7 @@ public class Tcc {
     private String dataDefesa;
     private String discente;
     private String email;
-
-    @Column(columnDefinition = "TEXT")
     private String titulo;
-
     private String orientador;
     private String examinador1;
     private String examinador2;

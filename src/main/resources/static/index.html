@@ -12,11 +12,16 @@
 <body onload="onload()">
 
     <section>
-        <div>
-            <button id="toggleSearch" onclick="toggleSearch()">
-                <img id="toggleSearch" src="./src/search.png" alt="aaaaa">
+        <div class="controles-topo">
+            <button onclick="toggleSearch()" class="btn btn-secundario">
+                🔍 Busca Avançada
             </button>
-            <div id="mapDiv">
+            <a href="stats.html" class="nav-button">
+                <button class="btn btn-primario">
+                📊 Ver Estatísticas
+                </button>
+            </a>
+        </div>
                 <?xml version="1.0" encoding="utf-8"?>
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100%"
                     viewBox="0 0 2000 1242" enable-background="new 0 0 2000 1242">
@@ -530,7 +535,7 @@
                     <h1 id="resultNumber"></h1>
                 </aside>
             </div>
-            <div id="search">
+            <div id="search" style="display: none;">
                 <button onclick="toggleSearch()">X</button>
                 <input id="titulo" type="text" placeholder="Título">
                 <div id="advanced">
@@ -539,43 +544,16 @@
                     <input id="examinador" type="text" placeholder="Examinador">
                     <input id="municipio" type="text" placeholder="Municipio">
                 </div>
-                <button id="showMesoregion" onclick="toggleMesoregion()">Mesoregiôes</button>
-                <div id="mesoregionDiv">
-                    <span>
-                        <input type="checkbox" name="Oeste Potiguar" id="oestePotiguar">
-                        <label for="oestePotiguar">
-                            <h1>Oeste Potiguar</h1>
-                        </label>
-                    </span>
-                    <span>
-                        <input type="checkbox" name="Central Potiguar" id="centralPotiguar">
-                        <label for="centralPotiguar">
-                            <h1>Central Potiguar</h1>
-                        </label>
-                    </span>
-                    <span>
-                        <input type="checkbox" name="Agreste Potiguar" id="agrestePotiguarMeso">
-                        <label for="agrestePotiguarMeso">
-                            <h1>Agreste Potiguar</h1>
-                        </label>
-                    </span>
-                    <span>
-                        <input type="checkbox" name="Leste Potiguar" id="lestePotiguar">
-                        <label for="lestePotiguar">
-                            <h1>Leste Potiguarr</h1>
-                        </label>
-                    </span>
-                </div>
+
+                <div id="errorMessage" style="color: red; margin-top: 10px; display: none;"></div>
+
                 <div id="buttons">
-                    <button id="searchBtn" onclick="search()">Pesquisar</button>
+                    <button id="searchBtn" onclick="executarBuscaAvancada()">Pesquisar</button>
                     <button id="clear" onclick="clean()">Limpar</button>
                 </div>
-
             </div>
         </div>
     </section>
-
-
     </aside>
 </body>
 

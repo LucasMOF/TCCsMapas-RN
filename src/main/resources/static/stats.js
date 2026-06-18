@@ -1,39 +1,26 @@
-function createElement(city){
-    const statsDiv = document.getElementById("stats")
-    
-    const cityH3 = document.createElement('h3')
-    cityH3.textContent = city
-    statsDiv.appendChild(cityH3)
-
-    const cityNumber = document.createElement("p")
-    cityNumber.id = city
-    statsDiv.appendChild(cityNumber)
-    cityNumber.textContent = "1"
-}
-
 async function loadStats() {
-    objectsAtDisplay = []
-    cityNumber = []
-    
-    const getResult = await fetch("http://localhost:3333/all", {
-        method: "GET",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    const result = await getResult.json()
-    for(i = 0; i<result.length; i++){
-        console.log("a")
-        if(objectsAtDisplay.indexOf(result[i].Municipio) == -1){
-            createElement(result[i].Municipio)
-            objectsAtDisplay.push(result[i].Municipio)
-            cityNumber.push(1)
-        }else{
-            cityNumber[objectsAtDisplay.indexOf(result[i].Municipio)]+=1
-        }
-    }
-    objectsAtDisplay.map((value,index)=> document.getElementById(value).textContent = cityNumber[index])
-    console.log(objectsAtDisplay, cityNumber)
-}
+    try {
+        const response = await fetch("http://localhost:8080/api/tccs/estatisticas");
+        if (!response.ok) throw new Error('Erro ao carregar estatísticas');
 
+        const data = await response.json(); // Aqui pegamos o objeto com totalTccs e porProfessor
+        const statsDiv = document.getElementById("stats");
+        statsDiv.innerHTML = `<h1>Total de TCCs: ${data.totalTccs}</h1>`; // Mostra o total
+
+        // Agora iteramos apenas na lista 'porProfessor'
+        data.porProfessor.forEach(item => {
+            const nomeProfessor = item[0] || "Não informado";
+            const quantidade = item[1];
+
+            const div = document.createElement("div");
+            div.className = "stat-item";
+            div.innerHTML = `
+                <h3>${nomeProfessor}</h3>
+                <p>Total de TCCs: ${quantidade}</p>
+            `;
+            statsDiv.appendChild(div);
+        });
+    } catch (error) {
+        console.error("Erro na busca de estatísticas:", error);
+    }
+}

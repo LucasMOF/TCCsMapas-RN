@@ -1,212 +1,139 @@
-:root{
-    display: inline-block;
-    --bgPrimary:#1b1b1b;
-    --bgSecondary: #1d2a35;
-    --textPrimary:#ffffff;
-}
-/*
-.genericSearchArea{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-}
-.genericSearchArea input{
-    width: 75%;
-    height: 20px;
-}
-.genericSearchArea h1{
-    color: var(--textPrimary);
-    font-size: small;
-}
-    */
-#popup{
-    display: none;
-    position: absolute;
-    color: var(--textPrimary);
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    background-color: var(--bgPrimary);
-    border-radius: 5px;
-    height: 50px;
-    width: 150px;
+/* Importando uma fonte moderna e limpa (Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Mantendo o seu fundo escuro */
+    background-color: #121212;
+    color: #e0e0e0;
 }
-@keyframes fill {
-    to {fill: rgb(177, 177, 177);}
-  }
-  
-path:hover{
-    animation-duration: 200ms;
-    animation-fill-mode: forwards;
-    animation-name: fill
+
+/* =========================================
+   CONTROLES DO TOPO (Botões flutuantes)
+========================================= */
+.controles-topo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 15px; /* Espaço entre os botões */
+    z-index: 1000;
 }
-#mapDiv{
-    background-color: var(--bgPrimary);
-    display: flexbox;
-    align-content: center;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+
+/* Estilo Base para todos os botões */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
+
+.btn:active {
+    transform: scale(0.97); /* Efeito de clique */
+}
+
+/* Cores específicas dos botões */
+.btn-primario {
+    background-color: #007bff;
+    color: #ffffff;
+}
+.btn-primario:hover { background-color: #0056b3; }
+
+.btn-secundario {
+    background-color: #2d3748;
+    color: #ffffff;
+}
+.btn-secundario:hover { background-color: #4a5568; }
+
+/* Botões de Pesquisar e Limpar na barra lateral */
+.btn-sucesso { background-color: #38a169; color: white; }
+.btn-sucesso:hover { background-color: #2f855a; }
+
+.btn-alerta { background-color: #ecc94b; color: #1a202c; }
+.btn-alerta:hover { background-color: #d6b33a; }
+
+/* =========================================
+   BARRA LATERAL (Busca e Resultados)
+========================================= */
+/* Ajuste as classes #search e #aside caso seus IDs sejam diferentes */
+#search, #aside {
+    background-color: #1e293b;
+    padding: 25px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    box-sizing: border-box;
+}
+
+/* Estilizando os campos de texto (inputs) */
+input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Estilo para a caixa de fechar (X) na barra de resultados */
+#aside button[onclick="hideAside()"] {
+    background: transparent;
+    color: #ef4444;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+#aside button[onclick="hideAside()"]:hover {
+    color: #b91c1c;
+}
+
+/* Efeito visual ao passar o mouse nos municípios */
+path {
+    cursor: pointer;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+path:hover {
+    filter: brightness(1.35); /* Deixa a cor original da região mais viva/clara */
+    opacity: 0.95;
+}
+
+#popup {
+    position: fixed;       /* Obriga o elemento a obedecer as coordenadas top e left do JS */
+    z-index: 2000;         /* Garante que ele vai flutuar acima do mapa e de outros elementos */
+    background-color: #1e293b; /* Fundo escuro combinando com a barra lateral */
+    color: #f8fafc;        /* Texto claro */
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #475569;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+
+    /* CRUCIAL: Impede que o próprio popup intercepte o mouse e quebre o efeito de hover do mapa */
+    pointer-events: none;
+}
+
 svg{
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-}
-section div div{
-    width: 100%;
-}
-*{
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-}
-
-#aside{
-    top: 0;
-    right: 0;
-    overflow-y: visible;
-    overflow-x: hidden;
-    position: absolute;
-    
-    color: var(--textPrimary);
-    background-color: var(--bgSecondary);
-    width: 40vw;
-    height: 100vh;
-}
-.header:hover{
-    backdrop-filter: brightness(150%);
-    cursor: pointer;
-}
-#resultSpan{
-    width: 30%;
-    display: flex;
-    justify-content: space-around;
-}
-#asideHeader{
-    display: flex;
-    justify-content: space-between;
-}
-button{
-    height: 30px;
-    width: 30px;
-    font-size: large;
-    border: none;
-    color: var(--textPrimary);
-    background-color: var(--bgSecondary);
-}
-button:hover{
-    cursor: pointer;
-    filter: brightness(150%);
-}
-
-.downloadBtn{
-    width: 110px;
-}
-#toggleSearch{
-    position: absolute;
-    /*temp at none (After debug, change to flex)*/
-    display: flex;
-    justify-content: center;
-}
-.header{
-    width: 100%;
-    height: 60px;
-    display: flex;
-    text-align: center;
-    align-items: center;
-}
-.item{
-    font-size: smaller;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 5px;
-    background-color: var(--bgPrimary);
-}
-#search{
-    padding: 10px;
-    color: var(--bgPrimary);
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 33%;
-    background-color: var(--bgSecondary);
-    position: absolute;
-    /*temp at flex (After debug, change to none)*/
-    display: none;
-    text-align: center;
-    flex-direction: column;
-}
-img{
-    height: 100%;
-    width: 100%;
-}
-#title{
-    height: 20px;
-}
-#advanced{
-    height: 140px;
-    width: 100%;
-    justify-content: space-between;
-}
-input{
-    color: #1b1b1b;
-    font-size: medium;
-    padding-left: 3px;
-    border-radius: 5px;
-    height: 25px;
-    margin: 10px;
-}
-#buttons{
-    display: flex;
-    justify-content: end;
-    right: 0;
-}
-#buttons button{
-    border-radius: 10px;
-    width: 70px;
-    font-size: smaller;
-    margin-right: 10px;
-}
-#searchBtn{
-    background-color: chartreuse;
-    color: black
-}
-#clear{
-    color: black;
-    background-color: lemonchiffon;
-}
-#mesoregionDiv{
-    overflow: auto;
-    height: 200px;
-    align-items: center;
-    color: var(--textPrimary);
-    display: none;
-}
-#showMesoregion{
-    background-color: var(--bgPrimary);
-    width: 150px;
-}
-#showMicroregion{
-    background-color: var(--bgPrimary);
-    width: 150px;
-}
-#mesoregionDiv input{
-    scale: 2;
-}
-#mesoregionDiv input:hover, #mesoregionDiv label{
-    cursor: pointer;
-}
-#microregionDiv{
-    font-size: 20px;
-    overflow: auto;
-    white-space: nowrap;
-    width: 100%;
-    height: 200px;
-    flex-direction: column;
-    color: var(--textPrimary);
-    display: flex;
 }

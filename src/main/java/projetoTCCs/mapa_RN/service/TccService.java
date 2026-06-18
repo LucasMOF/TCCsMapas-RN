@@ -20,6 +20,11 @@ public class TccService {
         return repository.findByMunicipioContainingIgnoreCase(municipio);
     }
 
+    // NOVO: Busca Avançada que chama o nosso repositório com filtro dinâmico
+    public List<Tcc> buscarAvancada(String titulo, String discente, String orientador, String municipio, String examinador) {
+        return repository.buscarAvancada(titulo, discente, orientador, municipio, examinador);
+    }
+
     public Tcc cadastrar(RequestTccDTO dados) {
         Tcc novoTcc = new Tcc();
 

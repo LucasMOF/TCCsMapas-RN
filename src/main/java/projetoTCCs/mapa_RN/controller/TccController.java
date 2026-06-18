@@ -24,6 +24,18 @@ public class TccController {
     private TccService service;
 
     // Endpoint para o Mapa: GET /api/tccs/busca?municipio=Angicos
+    @GetMapping("/busca-avancada")
+    public List<Tcc> buscarAvancada(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String discente,
+            @RequestParam(required = false) String orientador,
+            @RequestParam(required = false) String municipio,
+            @RequestParam(required = false) String examinador) {
+
+        return service.buscarAvancada(titulo, discente, orientador, municipio, examinador);
+    }
+
+    // Endpoint para o Mapa: GET /api/tccs/busca?municipio=Angicos
     @GetMapping("/busca")
     public List<Tcc> buscar(@RequestParam String municipio) {
         return service.buscarPorMunicipio(municipio);

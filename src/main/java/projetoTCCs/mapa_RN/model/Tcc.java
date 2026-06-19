@@ -22,9 +22,12 @@ public class Tcc {
     private String examinador2;
     private String municipio;
 
+    @Column(name = "url_pdf")
+    private String urlPdf;
+
     public Tcc() {
     }
-    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio) {
+    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String urlPdf) {
         this.id = id;
         this.dataDefesa = dataDefesa;
         this.discente = discente;
@@ -34,6 +37,7 @@ public class Tcc {
         this.examinador1 = examinador1;
         this.examinador2 = examinador2;
         this.municipio = municipio;
+        this.urlPdf = urlPdf;
     }
 
     public Long getId() {
@@ -106,5 +110,13 @@ public class Tcc {
 
     public void setMunicipio(String municipio) {
         this.municipio = municipio;
+    }
+
+    public String getUrlPdf () {
+        return urlPdf;
+    }
+
+    public void setUrlPdf(String urlPdf) {
+        this.urlPdf = urlPdf;
     }
 }

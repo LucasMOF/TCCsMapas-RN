@@ -2,6 +2,7 @@ package projetoTCCs.mapa_RN.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import projetoTCCs.mapa_RN.model.Tcc;
 import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
 import projetoTCCs.mapa_RN.repository.TccRepository;
@@ -15,6 +16,9 @@ public class TccService {
 
     @Autowired
     private TccRepository repository;
+
+    @Autowired
+    private SupabaseStorageService supabaseStorageService;
 
     public List<Tcc> buscarPorMunicipio(String municipio) {
         return repository.findByMunicipioContainingIgnoreCase(municipio);
@@ -50,5 +54,31 @@ public class TccService {
         stats.put("totalTccs", repository.count());
         stats.put("porProfessor", repository.countByOrientador());
         return stats;
+    }
+
+    public Tcc cadastrarComArquivo(RequestTccDTO dto) throws Exception {
+
+        String urlPublicaPdf = null;
+
+        // Verifica se o arquivo veio preenchido antes de tentar fazer o upload
+        if (dto.file() != null && !dto.file().isEmpty()) {
+            urlPublicaPdf = supabaseStorageService.uploadPdf(dto.file());
+        }
+
+        // Cria o objeto TCC e popula com os dados
+        Tcc novoTcc = new Tcc();
+        novoTcc.setTitulo(dto.titulo());
+        novoTcc.setDiscente(dto.discente());
+        novoTcc.setOrientador(dto.orientador());
+        novoTcc.setExaminador1(dto.examinador1());
+        novoTcc.setExaminador2(dto.examinador2());
+        novoTcc.setMunicipio(dto.municipio());
+        novoTcc.setDataDefesa(dto.dataDefesa());
+        novoTcc.setEmail(dto.email());
+
+        novoTcc.setUrlPdf(urlPublicaPdf); // Vai ser a URL se tiver arquivo, ou null se não tiver
+
+        // Salva no banco de dados
+        return repository.save(novoTcc);
     }
 }

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
-    <script src="index.js"></script>
     <title>Projeto</title>
 </head>
 
@@ -21,6 +20,7 @@
                 📊 Ver Estatísticas
                 </button>
             </a>
+            <button onclick="toggleCadastro()" class="btn btn-primario">➕ Cadastrar TCC</button>
         </div>
                 <?xml version="1.0" encoding="utf-8"?>
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100%"
@@ -552,9 +552,29 @@
                     <button id="clear" onclick="clean()">Limpar</button>
                 </div>
             </div>
+            <section id="form-cadastro" style="display: none; position: absolute; top: 10px; right: 10px; background: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+                <button onclick="toggleCadastro()">X</button>
+                <h2>Novo Cadastro</h2>
+
+                <form id="formCadastroTcc" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="titulo" placeholder="Título" required><br>
+                    <input type="text" name="discente" placeholder="Discente" required><br>
+                    <input type="text" name="orientador" placeholder="Orientador" required><br>
+                    <input type="datetime-local" name="dataDefesa" placeholder="Data da Defesa"><br>
+                    <input type="email" name="email" placeholder="E-mail"><br>
+                    <input type="text" name="examinador1" placeholder="Examinador 1"><br>
+                    <input type="text" name="examinador2" placeholder="Examinador 2"><br>
+                    <input type="text" name="municipio" placeholder="Ex: Angicos" required><br>
+
+                    <label>PDF do TCC:</label>
+                    <input type="file" name="file" accept="application/pdf"><br>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </section>
         </div>
     </section>
     </aside>
+    <script src="index.js"></script>
 </body>
-
 </html>

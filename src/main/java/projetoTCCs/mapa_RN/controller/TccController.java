@@ -1,10 +1,14 @@
 package projetoTCCs.mapa_RN.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import projetoTCCs.mapa_RN.model.Tcc;
 import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
+import projetoTCCs.mapa_RN.service.SupabaseStorageService;
 import projetoTCCs.mapa_RN.service.TccService;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.util.JSONPObject;
@@ -50,5 +54,19 @@ public class TccController {
     @PostMapping
     public Tcc cadastrar(@RequestBody @Validated RequestTccDTO dados) {
         return service.cadastrar(dados);
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<?> cadastrarTcc(@ModelAttribute @Valid RequestTccDTO dadosTcc) {
+        System.out.println("Recebi o título: " + dadosTcc.titulo()); // Adicione isso
+        try {
+            // Repassa apenas o DTO para o Service
+            Tcc tccSalvo = service.cadastrarComArquivo(dadosTcc);
+            return ResponseEntity.ok(tccSalvo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao salvar o TCC: " + e.getMessage());
+        }
     }
 }

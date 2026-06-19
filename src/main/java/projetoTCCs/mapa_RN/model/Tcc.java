@@ -40,6 +40,33 @@ public class Tcc {
         this.urlPdf = urlPdf;
     }
 
+    @PrePersist
+    @PreUpdate
+    public void preProcessarDados() {
+        if (this.municipio != null) this.municipio = this.municipio.toUpperCase();
+        if (this.discente != null) this.discente = this.discente.toUpperCase();
+        if (this.titulo != null) this.titulo = this.titulo.toUpperCase();
+        if (this.orientador != null) this.orientador = this.orientador.toUpperCase();
+
+        // Lógica Segura para Data
+        if (this.dataDefesa != null && !this.dataDefesa.isEmpty()) {
+            // Se a string só tiver 10 caracteres (formato "YYYY-MM-DD"), assumimos que não tem hora
+            // Se a string for maior (ex: "2026-06-19T14:30"), ela já tem hora, então não mexemos.
+            if (this.dataDefesa.length() == 10) {
+                this.dataDefesa = this.dataDefesa + "T00:00:00";
+            }
+        }
+
+        // Padronização do Município
+        if (this.municipio != null) {
+            String mun = this.municipio.toUpperCase().trim();
+            // Remove qualquer /RN existente para não ficar /RN/RN
+            mun = mun.replace("/RN", "");
+            // Adiciona o /RN corretamente
+            this.municipio = mun + "/RN";
+        }
+    }
+
     public Long getId() {
         return id;
     }

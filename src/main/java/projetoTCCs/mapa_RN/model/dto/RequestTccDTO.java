@@ -2,12 +2,12 @@ package projetoTCCs.mapa_RN.model.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
 public record RequestTccDTO(
 
-        @NotBlank(message = "A data de defesa é obrigatória")
         String dataDefesa,
 
         @NotBlank(message = "O nome do discente é obrigatório")        String discente,
@@ -25,7 +25,9 @@ public record RequestTccDTO(
         String examinador2,
 
         @NotBlank(message = "O município é obrigatório")
-        String municipio
+        String municipio,
+
+        MultipartFile file
 
 
         ) {

@@ -90,7 +90,6 @@ function createObject(info, id) {
     hiddenDiv.className = "hiddenDiv";
     hiddenDiv.id = id + "hidden";
 
-    // Adicionando os detalhes do TCC
     hiddenDiv.innerHTML = `
         <p><strong>Discente:</strong> ${info.discente || 'N/A'}</p>
         <p><strong>Orientador:</strong> ${info.orientador || 'N/A'}</p>
@@ -98,7 +97,6 @@ function createObject(info, id) {
         <p><strong>Examinadores:</strong> ${info.examinador1 || ''} / ${info.examinador2 || ''}</p>
     `;
 
-    // Botão de Visualização / Download
     const btn = document.createElement("button");
     btn.className = "downloadBtn";
 
@@ -146,14 +144,11 @@ async function load(id) {
             result.forEach((tcc, index) => createObject(tcc, index));
             aside.style.display = "block";
 
-            // Rola a tela suavemente até a barra lateral
             aside.scrollIntoView({ behavior: 'smooth' });
         } else {
-            console.error("Formato de resposta inesperado para o município:", result);
+            console.error("Formato de resposta inesperado:", result);
             document.getElementById("resultNumber").textContent = "Erro no formato dos dados";
             aside.style.display = "block";
-
-            // Rola a tela mesmo se houver erro para mostrar a mensagem
             aside.scrollIntoView({ behavior: 'smooth' });
         }
     } catch (error) {
@@ -196,6 +191,13 @@ function toggleSearch() {
     }
 }
 
+function toggleCadastro() {
+    const cadastro = document.getElementById('form-cadastro');
+    if (cadastro) {
+        cadastro.style.display = (cadastro.style.display === 'none') ? 'block' : 'none';
+    }
+}
+
 function hideAside() {
     document.getElementById("aside").style.display = "none";
 }
@@ -206,3 +208,64 @@ function clean() {
         if (el) el.value = "";
     });
 }
+
+/**
+ * Event Listener de inicialização (Protegido)
+ */
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Auto-completa /RN no campo município ao perder o foco (blur)
+    const munInput = document.getElementById('municipio');
+    if (munInput) {
+        munInput.addEventListener('blur', (e) => {
+            let val = e.target.value.trim().toUpperCase();
+            if (val.length > 0 && !val.endsWith('/RN')) {
+                // Remove caso já tenha /RN de forma incorreta ou incompleta e adiciona o padrão
+                val = val.replace(/\/RN/gi, '');
+                e.target.value = val + "/RN";
+            }
+        });
+    }
+
+    const form = document.getElementById('formCadastroTcc');
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Proteção contra duplo clique: Desabilita o botão
+            const btnSubmit = e.target.querySelector('button[type="submit"]');
+            if (btnSubmit) {
+                btnSubmit.disabled = true;
+                btnSubmit.innerText = "Enviando...";
+            }
+
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch('http://localhost:8080/api/tccs/cadastrar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("TCC cadastrado com sucesso!");
+                    e.target.reset();
+                    toggleCadastro(); // Fecha o formulário após sucesso
+                } else {
+                    const erro = await response.text();
+                    alert("Erro ao cadastrar: " + erro);
+                }
+            } catch (err) {
+                console.error("Erro:", err);
+                alert("Falha na conexão com o servidor.");
+            } finally {
+                // Reabilita o botão para permitir novas tentativas ou cadastros
+                if (btnSubmit) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerText = "Enviar";
+                }
+            }
+        });
+    }
+});

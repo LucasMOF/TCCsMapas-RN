@@ -23,7 +23,6 @@ public class TccController {
     @Autowired
     private TccService service;
 
-    // Endpoint para o Mapa: GET /api/tccs/busca?municipio=Angicos
     @GetMapping("/busca-avancada")
     public List<Tcc> buscarAvancada(
             @RequestParam(required = false) String titulo,

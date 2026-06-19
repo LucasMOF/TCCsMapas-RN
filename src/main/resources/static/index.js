@@ -98,12 +98,19 @@ function createObject(info, id) {
         <p><strong>Examinadores:</strong> ${info.examinador1 || ''} / ${info.examinador2 || ''}</p>
     `;
 
-    // Botão de Download
+    // Botão de Visualização / Download
     const btn = document.createElement("button");
-    btn.id = cleanText(info.titulo || "doc");
     btn.className = "downloadBtn";
-    btn.textContent = "Download";
-    btn.onclick = () => startDownload(btn.id);
+
+    if (info.urlPdf) {
+        btn.textContent = "Visualizar PDF";
+        btn.onclick = () => startDownload(info.urlPdf, info.titulo);
+    } else {
+        btn.textContent = "PDF Indisponível";
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+    }
 
     hiddenDiv.appendChild(btn);
     div.appendChild(hiddenDiv);
@@ -112,28 +119,13 @@ function createObject(info, id) {
 /**
  * Funções de Ação e Utilidades
  */
-async function startDownload(TCCName) {
-    try {
-        const response = await fetch(`http://localhost:3333/Download?TCC=${TCCName}`, {
-            headers: { 'Accept': 'application/pdf' }
-        });
-        const blob = await response.blob();
-        if (blob.type === "application/pdf") {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${TCCName}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
-    } catch (err) {
-        console.error("Erro ao realizar download:", err);
+function startDownload(urlPdf, tituloTCC) {
+    if (!urlPdf) {
+        alert("URL do PDF não encontrada para este TCC.");
+        return;
     }
-}
-
-function cleanText(text) {
-    return text.replaceAll(" ", "").replaceAll("-", "").replaceAll(":", "").replaceAll("/", "").toUpperCase();
+    console.log(`Abrindo PDF do TCC: ${tituloTCC}`);
+    window.open(urlPdf, '_blank');
 }
 
 async function load(id) {
@@ -195,14 +187,11 @@ function toggleDetails(divElement) {
 function toggleSearch() {
     const el = document.getElementById("search");
     if (el) {
-        // Verifica se a busca está escondida no momento do clique
         if (window.getComputedStyle(el).display === "none") {
-            el.style.display = "flex"; // Abre o menu de busca
-
-            // Rola a tela suavemente até o menu de busca
+            el.style.display = "flex";
             el.scrollIntoView({ behavior: 'smooth' });
         } else {
-            el.style.display = "none"; // Esconde o menu se ele já estiver aberto
+            el.style.display = "none";
         }
     }
 }

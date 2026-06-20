@@ -22,7 +22,7 @@ public class SupabaseStorageService {
     private String bucketName;
 
     public String uploadPdf(MultipartFile file, String nomeSeguro) throws IOException {
-        // 1. Gera um nome único para o arquivo não sobrescrever outro TCC com nome igual
+        // Gera um nome aleatório único para o arquivo não sobrescrever outro TCC com nome igual
         String nomeOriginal = file.getOriginalFilename();
         if (nomeOriginal == null) {
             nomeOriginal = "tcc.pdf";
@@ -31,10 +31,10 @@ public class SupabaseStorageService {
         String nomeLimpo = nomeOriginal.replaceAll("[^a-zA-Z0-9.-]", "_");
         String fileName = UUID.randomUUID().toString() + "-" + nomeLimpo;
 
-        // 2. Monta a URL de upload da API do Supabase
+        // Monta a URL de upload da API do Supabase
         String uploadUrl = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + fileName;
 
-        // 3. Prepara a requisição HTTP
+        // Prepara a requisição HTTP
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(supabaseKey);
@@ -43,10 +43,10 @@ public class SupabaseStorageService {
 
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(file.getBytes(), headers);
 
-        // 4. Dispara o arquivo para o Supabase
+        // Dispara o arquivo para o Supabase
         ResponseEntity<String> response = restTemplate.exchange(uploadUrl, HttpMethod.POST, requestEntity, String.class);
 
-        // 5. Se der sucesso (código 200), retorna o link público do PDF!
+        // Se der sucesso (código 200), retorna o link público do PDF!
         if (response.getStatusCode().is2xxSuccessful()) {
             return supabaseUrl + "/storage/v1/object/public/" + bucketName + "/" + fileName;
         } else {

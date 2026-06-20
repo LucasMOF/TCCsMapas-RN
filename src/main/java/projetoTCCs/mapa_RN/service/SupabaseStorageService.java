@@ -21,7 +21,7 @@ public class SupabaseStorageService {
     @Value("${supabase.bucket}")
     private String bucketName;
 
-    public String uploadPdf(MultipartFile file) throws IOException {
+    public String uploadPdf(MultipartFile file, String nomeSeguro) throws IOException {
         // 1. Gera um nome único para o arquivo não sobrescrever outro TCC com nome igual
         String nomeOriginal = file.getOriginalFilename();
         if (nomeOriginal == null) {

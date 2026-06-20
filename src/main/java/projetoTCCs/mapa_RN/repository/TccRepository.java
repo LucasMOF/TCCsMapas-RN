@@ -31,4 +31,6 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
             @Param("municipio") String municipio,
             @Param("examinador") String examinador
     );
+
+    boolean existsByTituloAndDiscente(String titulo, String discente);
 }

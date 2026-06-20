@@ -1,26 +1,41 @@
-async function loadStats() {
+document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("http://localhost:8080/api/tccs/estatisticas");
-        if (!response.ok) throw new Error('Erro ao carregar estatísticas');
+        // Faz a requisição para o seu Backend
+        const response = await fetch('http://localhost:8080/api/tccs/estatisticas');
+        
+        if (!response.ok) {
+            throw new Error("Erro ao buscar estatísticas");
+        }
+        
+        const data = await response.json();
+        
+        // 1. Atualiza o número total de TCCs (ignorando os IDs que pularam)
+        document.getElementById('totalTccs').textContent = data.totalTccs;
 
-        const data = await response.json(); // Aqui pegamos o objeto com totalTccs e porProfessor
-        const statsDiv = document.getElementById("stats");
-        statsDiv.innerHTML = `<h1>Total de TCCs: ${data.totalTccs}</h1>`; // Mostra o total
+        // 2. Localiza o corpo da tabela e limpa
+        const tbody = document.getElementById('tabela-professores');
+        tbody.innerHTML = ''; 
 
-        // Agora iteramos apenas na lista 'porProfessor'
-        data.porProfessor.forEach(item => {
-            const nomeProfessor = item[0] || "Não informado";
-            const quantidade = item[1];
-
-            const div = document.createElement("div");
-            div.className = "stat-item";
-            div.innerHTML = `
-                <h3>${nomeProfessor}</h3>
-                <p>Total de TCCs: ${quantidade}</p>
+        // 3. Itera sobre a lista de professores e cria as linhas dinamicamente
+        data.professores.forEach(prof => {
+            const tr = document.createElement('tr');
+            
+            tr.innerHTML = `
+                <td class="nome-prof">${prof.nome}</td>
+                <td><span class="badge">${prof.orientacoes}</span></td>
+                <td><span class="badge">${prof.bancas}</span></td>
+                <td><span class="badge badge-total">${prof.total}</span></td>
             `;
-            statsDiv.appendChild(div);
+            
+            tbody.appendChild(tr);
         });
+
     } catch (error) {
         console.error("Erro na busca de estatísticas:", error);
+        document.getElementById('totalTccs').textContent = "Erro ao carregar dados.";
+        
+        // Opcional: Mostrar erro na tabela para o usuário
+        const tbody = document.getElementById('tabela-professores');
+        tbody.innerHTML = `<tr><td colspan="4" style="color: red; text-align: center;">Não foi possível carregar as estatísticas no momento.</td></tr>`;
     }
-}
+});

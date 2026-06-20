@@ -48,38 +48,36 @@ public class TccService {
 
     public Map<String, Object> buscarEstatisticas() {
         List<Tcc> todosTccs = repository.findAll();
-        long totalTccs = todosTccs.size(); // Conta as linhas exatas, ignorando IDs pulados
+        long totalTccs = todosTccs.size();
 
         Map<String, ProfessorStatsDTO> mapaProfessores = new HashMap<>();
 
         for (Tcc tcc : todosTccs) {
-            // Conta Orientações
+            // Processa Orientações
             if (tcc.getOrientador() != null && !tcc.getOrientador().isBlank()) {
-                String nome = tcc.getOrientador().trim().toUpperCase();
+                String nome = limparNome(tcc.getOrientador());
                 mapaProfessores.putIfAbsent(nome, new ProfessorStatsDTO(nome));
                 mapaProfessores.get(nome).addOrientacao();
             }
 
-            // Conta Bancas (Examinador 1)
+            // Processa Bancas (Examinador 1)
             if (tcc.getExaminador1() != null && !tcc.getExaminador1().isBlank()) {
-                String nome = tcc.getExaminador1().trim().toUpperCase();
+                String nome = limparNome(tcc.getExaminador1());
                 mapaProfessores.putIfAbsent(nome, new ProfessorStatsDTO(nome));
                 mapaProfessores.get(nome).addBanca();
             }
 
-            // Conta Bancas (Examinador 2)
+            // Processa Bancas (Examinador 2)
             if (tcc.getExaminador2() != null && !tcc.getExaminador2().isBlank()) {
-                String nome = tcc.getExaminador2().trim().toUpperCase();
+                String nome = limparNome(tcc.getExaminador2());
                 mapaProfessores.putIfAbsent(nome, new ProfessorStatsDTO(nome));
                 mapaProfessores.get(nome).addBanca();
             }
         }
 
-        // Converte o mapa para uma lista e ordena do professor com mais participações para o menor
         List<ProfessorStatsDTO> listaProfessores = new ArrayList<>(mapaProfessores.values());
         listaProfessores.sort((p1, p2) -> Integer.compare(p2.getTotal(), p1.getTotal()));
 
-        // Monta a resposta final
         Map<String, Object> response = new HashMap<>();
         response.put("totalTccs", totalTccs);
         response.put("professores", listaProfessores);
@@ -87,32 +85,55 @@ public class TccService {
         return response;
     }
 
+    // Método auxiliar para remover títulos e normalizar nomes
+    private String limparNome(String nome) {
+        if (nome == null || nome.isBlank()) return "DESCONHECIDO";
+
+        String n = nome.toUpperCase().trim();
+
+        // 1. Dicionário de remoção: adicione aqui qualquer combinação que você vir na lista
+        // A ordem importa: tente os títulos mais longos primeiro
+        String[] lixo = {
+                "PROF. DR.ª", "PROFº. DRº.", "PROF. DRA.", "PROFª. DRª.", "PROF. DR.", "PROF. MSC.", "PROF. ME.", "PROF. ESP.",
+                "PROFA. DRA.", "PROFA. MSC.", "PROFA. ME.", "PROFA. ESP.", "PROFA.",
+                "PROF. DRª.", "PROF. DR", "PROF. MSC", "PROF. ME", "PROFº.", "PROFA", "PROF.", "PRFA.", "PROF", "POFA.",
+                "DR.ª", "DRA.", "DR.", "MSC.", "ME.", "ME", "MS.", "ESP.", "ENG.", "ENGª.", "CIVIL", "BEL.", "º"
+        };
+
+        for (String termo : lixo) {
+            n = n.replace(termo, "");
+        }
+
+        // 2. Correções manuais de nomes cortados ou erros comuns
+        n = n.replace("MEMEDEIROS", "MEDEIROS")
+                .replace("SÂVALENSCA", "SÂMEA VALENSCA")
+                .replace("SÂA VALENSCA", "SÂMEA VALENSCA") // <--- Corrigido aqui
+                .replace("ANTÔNIO ALCÊCÂMARA", "ANTÔNIO ALCÊU CÂMARA")
+                .replace("FORBELONI", "FORONI");
+
+        // 3. Limpeza final de espaços extras
+        return n.replaceAll("\\s+", " ").trim();
+    }
+
     public Tcc cadastrarComArquivo(RequestTccDTO dto) throws Exception {
         String urlSupabase = null;
 
-        // Verifica se o arquivo veio preenchido antes de tentar fazer o upload
         if (dto.file() != null && !dto.file().isEmpty()) {
-
             if (!"application/pdf".equals(dto.file().getContentType())) {
                 throw new IllegalArgumentException("Apenas arquivos no formato PDF são permitidos.");
             }
 
             String nomeOriginal = dto.file().getOriginalFilename();
-            String extensao = ".pdf"; // Extensão padrão caso falhe a extração
+            String extensao = ".pdf";
 
-            // Extrai a extensão original de forma segura (.pdf, .PDF, etc.)
             if (nomeOriginal != null && nomeOriginal.contains(".")) {
                 extensao = nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
             }
 
-            // Gera um nome único via UUID livre de acentos, espaços ou caracteres especiais
             String nomeSeguro = UUID.randomUUID().toString() + extensao;
-
-            // Enviamos o arquivo E o novo nome seguro para o Supabase
             urlSupabase = supabaseStorageService.uploadPdf(dto.file(), nomeSeguro);
         }
 
-        // Cria o objeto TCC e popula com os dados
         Tcc novoTcc = new Tcc();
         novoTcc.setTitulo(dto.titulo());
         novoTcc.setDiscente(dto.discente());
@@ -122,10 +143,8 @@ public class TccService {
         novoTcc.setMunicipio(dto.municipio());
         novoTcc.setDataDefesa(dto.dataDefesa());
         novoTcc.setEmail(dto.email());
+        novoTcc.setUrlPdf(urlSupabase);
 
-        novoTcc.setUrlPdf(urlSupabase); // Vai ser a URL se tiver arquivo, ou null se não tiver
-
-        // Salva no banco de dados
         return repository.save(novoTcc);
     }
 
@@ -139,5 +158,3 @@ public class TccService {
         return repository.existsByTituloAndDiscente(tituloFormatado, discenteFormatado);
     }
 }
-
-

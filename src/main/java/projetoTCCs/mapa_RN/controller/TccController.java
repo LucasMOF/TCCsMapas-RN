@@ -66,7 +66,7 @@ public class TccController {
         }
         try {
             // Repassa apenas o DTO para o Service
-            Tcc tccSalvo = service.cadastrarComArquivo(dadosTcc);
+            Tcc tccSalvo = service.cadastrar(dadosTcc);
             return ResponseEntity.ok(tccSalvo);
 
         } catch (IllegalArgumentException e) {

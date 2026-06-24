@@ -140,23 +140,30 @@ public class TccService {
 
         String n = nome.toUpperCase().trim();
 
-        String[] lixo = {
-                "PROF. DR.ª", "PROFº. DRº.", "PROF. DRA.", "PROFª. DRª.", "PROF. DR.", "PROF. MSC.", "PROF. ME.", "PROF. ESP.",
-                "PROFA. DRA.", "PROFA. MSC.", "PROFA. ME.", "PROFA. ESP.", "PROFA.",
-                "PROF. DRª.", "PROF. DR", "PROF. MSC", "PROF. ME", "PROFº.", "PROFA", "PROF.", "PRFA.", "PROF", "POFA.",
-                "DR.ª", "DRA.", "DR.", "MSC.", "ME.", "MS.", "ESP.", "ENG.", "ENGª.", "CIVIL", "BEL.", "º"
+        // 1. Dicionário limpo e cirúrgico (da maior titulação para a menor)
+        String[] titulos = {
+                // Compostos com ponto
+                "PROF. DR.", "PROFA. DRA.", "PROF. DRA.", "PROFA. DR.",
+                "PROF. MSC.", "PROFA. MSC.", "PROF. MS.", "PROFA. MS.", "POFA. MSC.",
+                "PROF. ME.", "PROFA. ME.", "PROF. ESP.", "PROFA. ESP.", "PRFA. MSC.",
+
+                // Simples com ponto
+                "PROF.", "PROFA.", "PRFA.", "POFA.", "DR.", "DRA.", "MSC.", "MS.", "ME.", "ESP.", "ENG.", "BEL.",
+
+                // Casos de erro do usuário (sem ponto, mas estritamente protegidos por espaço)
+                "PROF ", "PROFA ", "MSC ", "ESP ", "ENG ", "CIVIL "
+                /* Nota de rodapé: "ME " e "MS " sem ponto ficam de fora propositalmente
+                   para não mutilar nomes como "GUILHERME" ou "RAMSÉS". */
         };
 
-        for (String termo : lixo) {
-            n = n.replace(termo, "");
+        for (String titulo : titulos) {
+            n = n.replace(titulo, "");
         }
 
-        n = n.replace("MEMEDEIROS", "MEDEIROS")
-                .replace("SÂVALENSCA", "SÂMEA VALENSCA")
-                .replace("SÂA VALENSCA", "SÂMEA VALENSCA")
-                .replace("ANTÔNIO ALCÊCÂMARA", "ANTÔNIO ALCÊU CÂMARA")
-                .replace("FORBELONI", "FORONI");
+        // 2. Limpeza de resíduos fofos (caso o usuário tenha digitado "Prof. - Geomar")
+        n = n.replace("-", "").replace(",", "");
 
+        // 3. Colapsa espaços duplos/triplos que sobraram em um único espaço, e dá o trim final
         return n.replaceAll("\\s+", " ").trim();
     }
 }

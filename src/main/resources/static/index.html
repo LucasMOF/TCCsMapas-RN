@@ -552,26 +552,41 @@
                     <button id="clear" onclick="clean()">Limpar</button>
                 </div>
             </div>
-            <section id="form-cadastro" style="display: none; position: absolute; top: 10px; right: 10px; background: white; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
-                <button onclick="toggleCadastro()">X</button>
+        <section id="form-cadastro" class="painel-flutuante">
+            <div class="form-header">
                 <h2>Novo Cadastro</h2>
+                <button type="button" class="btn-fechar" onclick="toggleCadastro()">✖</button>
+            </div>
 
-                <form id="formCadastroTcc" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="titulo" placeholder="Título" required><br>
-                    <input type="text" name="discente" placeholder="Discente" required><br>
-                    <input type="text" name="orientador" placeholder="Orientador" required><br>
-                    <input type="datetime-local" name="dataDefesa" placeholder="Data da Defesa"><br>
-                    <input type="email" name="email" placeholder="E-mail"><br>
-                    <input type="text" name="examinador1" placeholder="Examinador 1"><br>
-                    <input type="text" name="examinador2" placeholder="Examinador 2"><br>
-                    <input type="text" name="municipio" placeholder="Ex: Angicos" required><br>
+            <form id="formCadastroTcc" method="POST" enctype="multipart/form-data">
+                <div class="input-group"><input type="text" name="titulo" placeholder="Título do TCC" required></div>
+                <div class="input-group"><input type="text" name="discente" placeholder="Discente" required></div>
+                <div class="input-group"><input type="text" name="orientador" placeholder="Orientador" required></div>
 
-                    <label>PDF do TCC:</label>
-                    <input type="file" name="file" accept="application/pdf"><br>
+                <div class="input-row">
+                    <div class="input-group"><input type="datetime-local" name="dataDefesa"></div>
+                    <div class="input-group"><input type="email" name="email" placeholder="E-mail"></div>
+                </div>
 
-                    <button type="submit">Enviar</button>
-                </form>
-            </section>
+                <div class="input-row">
+                    <div class="input-group"><input type="text" name="examinador1" placeholder="Examinador 1"></div>
+                    <div class="input-group"><input type="text" name="examinador2" placeholder="Examinador 2"></div>
+                </div>
+
+                <div class="input-group">
+                    <input list="lista-municipios-rn" id="municipio-cadastro" name="municipio" placeholder="Digite o Município..." autocomplete="off" required>
+                    <datalist id="lista-municipios-rn"></datalist>
+                </div>
+
+                <div class="input-group file-group">
+                    <label>Arquivo PDF:</label>
+                    <input type="file" name="file" accept="application/pdf">
+                </div>
+
+                <button type="submit" class="btn-enviar">Cadastrar TCC</button>
+                <button type="reset" class="btn-limpar">Limpar campos</button>
+            </form>
+        </section>
         </div>
     </section>
     </aside>

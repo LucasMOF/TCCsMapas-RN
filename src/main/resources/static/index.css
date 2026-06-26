@@ -1,28 +1,35 @@
-/* Importando uma fonte moderna e limpa (Inter) */
+/* ==========================================================================
+   IMPORTAÇÃO DE FONTES E GLOBAIS
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    /* Mantendo o seu fundo escuro */
     background-color: #121212;
     color: #e0e0e0;
 }
 
-/* =========================================
-   CONTROLES DO TOPO (Botões flutuantes)
-========================================= */
+svg {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+/* ==========================================================================
+   CONTROLES DO TOPO
+   ========================================================================== */
 .controles-topo {
     position: absolute;
     top: 20px;
     left: 20px;
     display: flex;
-    gap: 15px; /* Espaço entre os botões */
+    gap: 15px;
     z-index: 1000;
 }
 
-/* Estilo Base para todos os botões */
 .btn {
     padding: 10px 18px;
     border: none;
@@ -37,103 +44,149 @@ body {
 }
 
 .btn:active {
-    transform: scale(0.97); /* Efeito de clique */
+    transform: scale(0.97);
 }
 
-/* Cores específicas dos botões */
 .btn-primario {
     background-color: #007bff;
     color: #ffffff;
 }
-.btn-primario:hover { background-color: #0056b3; }
 
-.btn-secundario {
-    background-color: #2d3748;
-    color: #ffffff;
+.btn-primario:hover {
+    background-color: #0056b3;
 }
-.btn-secundario:hover { background-color: #4a5568; }
 
-/* Botões de Pesquisar e Limpar na barra lateral */
-.btn-sucesso { background-color: #38a169; color: white; }
-.btn-sucesso:hover { background-color: #2f855a; }
-
-.btn-alerta { background-color: #ecc94b; color: #1a202c; }
-.btn-alerta:hover { background-color: #d6b33a; }
-
-/* =========================================
-   BARRA LATERAL (Busca e Resultados)
-========================================= */
-/* Ajuste as classes #search e #aside caso seus IDs sejam diferentes */
-#search, #aside {
+/* ==========================================================================
+   BARRA LATERAL E FORMULÁRIOS
+   ========================================================================== */
+#search,
+#aside {
     background-color: #1e293b;
     padding: 25px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
 }
 
-/* Estilizando os campos de texto (inputs) */
-input[type="text"] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 15px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background-color: #0f172a;
-    color: #f8fafc;
-    font-family: 'Inter', sans-serif;
-    box-sizing: border-box;
+/* Painel de Cadastro */
+.painel-flutuante {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 420px;
+    background-color: #1e1e24;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    z-index: 1000;
+    color: #f1f1f1;
 }
 
-input[type="text"]:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* Estilo para a caixa de fechar (X) na barra de resultados */
-#aside button[onclick="hideAside()"] {
-    background: transparent;
-    color: #ef4444;
+.btn-fechar {
+    background: none;
     border: none;
-    font-size: 20px;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+}
+
+.input-row > .input-group {
+    flex: 1;
+}
+
+/* Estilização dos Inputs */
+input[type="text"],
+input[type="email"],
+input[type="datetime-local"],
+input[type="file"],
+input[list] {
+    width: 100% !important;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2b2d36;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.btn-enviar {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    float: right;
-}
-#aside button[onclick="hideAside()"]:hover {
-    color: #b91c1c;
+    margin-top: 10px;
 }
 
-/* Efeito visual ao passar o mouse nos municípios */
+/* Estilo específico para o botão de limpar */
+.btn-limpar {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent; /* Fundo transparente */
+    color: #888; /* Cor cinza suave */
+    border: 1px solid #444; /* Borda sutil */
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+}
+
+.btn-limpar:hover {
+    background-color: #2b2d36;
+    color: #ff4c4c; /* Fica avermelhado ao passar o mouse */
+    border-color: #ff4c4c;
+}
+
+/* ==========================================================================
+   MAPA E POPUP
+   ========================================================================== */
 path {
     cursor: pointer;
-    transition: filter 0.2s ease, opacity 0.2s ease;
+    transition: filter 0.2s;
 }
 
 path:hover {
-    filter: brightness(1.35); /* Deixa a cor original da região mais viva/clara */
+    filter: brightness(1.35);
     opacity: 0.95;
 }
 
 #popup {
-    position: fixed;       /* Obriga o elemento a obedecer as coordenadas top e left do JS */
-    z-index: 2000;         /* Garante que ele vai flutuar acima do mapa e de outros elementos */
-    background-color: #1e293b; /* Fundo escuro combinando com a barra lateral */
-    color: #f8fafc;        /* Texto claro */
+    position: fixed;
+    z-index: 2000;
+    background-color: #1e293b;
+    color: #f8fafc;
     padding: 6px 12px;
     border-radius: 4px;
     border: 1px solid #475569;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-
-    /* CRUCIAL: Impede que o próprio popup intercepte o mouse e quebre o efeito de hover do mapa */
     pointer-events: none;
-}
-
-svg{
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
 }

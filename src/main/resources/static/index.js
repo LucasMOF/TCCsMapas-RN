@@ -1,6 +1,6 @@
-/**
- * Inicialização
- */
+
+ // Inicialização e Eventos do Mapa
+
 function onload() {
     const paths = document.getElementsByTagName("path");
     for (let i = 0; i < paths.length; i++) {
@@ -8,9 +8,9 @@ function onload() {
     }
 }
 
-/**
- * Função principal de Busca Avançada
- */
+ // Regras de Negócio e Mecanismos de Busca
+
+
 async function executarBuscaAvancada() {
     console.log("Iniciando busca avançada...");
 
@@ -60,9 +60,38 @@ async function executarBuscaAvancada() {
     }
 }
 
-/**
- * Funções de Construção de Objetos e UI
- */
+async function load(id) {
+    const url = `http://localhost:8080/api/tccs/busca?municipio=${encodeURIComponent(id)}`;
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) throw new Error(`Erro no servidor: ${response.status}`);
+
+        const result = await response.json();
+        const aside = document.getElementById("aside");
+
+        aside.innerHTML = '<button onclick="hideAside()">X</button><h1 id="city"></h1><h1 id="resultNumber"></h1>';
+        document.getElementById("city").textContent = id;
+
+        if (Array.isArray(result)) {
+            document.getElementById("resultNumber").textContent = result.length + " encontrados";
+            result.forEach((tcc, index) => createObject(tcc, index));
+            aside.style.display = "block";
+
+            aside.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error("Formato de resposta inesperado:", result);
+            document.getElementById("resultNumber").textContent = "Erro no formato dos dados";
+            aside.style.display = "block";
+            aside.scrollIntoView({ behavior: 'smooth' });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar por município:", error);
+    }
+}
+
+ // Manipulação do DOM e Elementos de Interface (UI)
+
 function createObject(info, id) {
     const aside = document.getElementById("aside");
     if (!info) return;
@@ -114,48 +143,6 @@ function createObject(info, id) {
     div.appendChild(hiddenDiv);
 }
 
-/**
- * Funções de Ação e Utilidades
- */
-function startDownload(urlPdf, tituloTCC) {
-    if (!urlPdf) {
-        alert("URL do PDF não encontrada para este TCC.");
-        return;
-    }
-    console.log(`Abrindo PDF do TCC: ${tituloTCC}`);
-    window.open(urlPdf, '_blank');
-}
-
-async function load(id) {
-    const url = `http://localhost:8080/api/tccs/busca?municipio=${encodeURIComponent(id)}`;
-    try {
-        const response = await fetch(url);
-
-        if (!response.ok) throw new Error(`Erro no servidor: ${response.status}`);
-
-        const result = await response.json();
-        const aside = document.getElementById("aside");
-
-        aside.innerHTML = '<button onclick="hideAside()">X</button><h1 id="city"></h1><h1 id="resultNumber"></h1>';
-        document.getElementById("city").textContent = id;
-
-        if (Array.isArray(result)) {
-            document.getElementById("resultNumber").textContent = result.length + " encontrados";
-            result.forEach((tcc, index) => createObject(tcc, index));
-            aside.style.display = "block";
-
-            aside.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            console.error("Formato de resposta inesperado:", result);
-            document.getElementById("resultNumber").textContent = "Erro no formato dos dados";
-            aside.style.display = "block";
-            aside.scrollIntoView({ behavior: 'smooth' });
-        }
-    } catch (error) {
-        console.error("Erro ao buscar por município:", error);
-    }
-}
-
 function showName(id) {
     const element = document.getElementById(id);
     if (!element) return;
@@ -170,6 +157,17 @@ function showName(id) {
 function hideName() {
     const popup = document.getElementById("popup");
     if (popup) popup.style.display = "none";
+}
+
+ // Funções Utilitárias e Alternadores de Escopo (Toggles)
+
+function startDownload(urlPdf, tituloTCC) {
+    if (!urlPdf) {
+        alert("URL do PDF não encontrada para este TCC.");
+        return;
+    }
+    console.log(`Abrindo PDF do TCC: ${tituloTCC}`);
+    window.open(urlPdf, '_blank');
 }
 
 function toggleDetails(divElement) {
@@ -209,12 +207,14 @@ function clean() {
     });
 }
 
-/**
- * Event Listener de inicialização (Protegido)
- */
+ // Ciclo de Vida da Aplicação e Listeners Globais
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Auto-completa /RN no campo município ao perder o foco (blur)
+    // Alimenta dinamicamente o Datalist do formulário de cadastro com a API do IBGE
+    carregarMunicipiosIBGE();
+
+    // Auto-completa /RN no campo município da BUSCA AVANÇADA ao perder o foco (blur)
     const munInput = document.getElementById('municipio');
     if (munInput) {
         munInput.addEventListener('blur', (e) => {
@@ -227,8 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Manipulação do Envio do Formulário de Cadastro
     const form = document.getElementById('formCadastroTcc');
-
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -269,3 +269,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+/**
+ * Consome de forma assíncrona os dados oficiais do Governo Federal (IBGE)
+ * e injeta ordenado de A-Z e em caixa alta na UI.
+ */
+function carregarMunicipiosIBGE() {
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/RN/municipios')
+        .then(response => response.json())
+        .then(cidades => {
+            const datalist = document.getElementById('lista-municipios-rn');
+
+            // Trava de segurança: se a página não carregar este formulário específico, evita erros no console.
+            if (!datalist) return;
+
+            cidades
+                .sort((a, b) => a.nome.localeCompare(b.nome))
+                .forEach(cidade => {
+                    const option = document.createElement('option');
+                    option.value = cidade.nome.toUpperCase();
+                    datalist.appendChild(option);
+                });
+        })
+        .catch(erro => console.error("Erro ao carregar municípios do IBGE:", erro));
+}

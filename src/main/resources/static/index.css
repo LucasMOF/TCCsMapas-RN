@@ -57,14 +57,112 @@ svg {
 }
 
 /* ==========================================================================
-   BARRA LATERAL E FORMULÁRIOS
+   BARRA DE BUSCA AVANÇADA (#search) E RESULTADOS (#aside)
    ========================================================================== */
-#search,
-#aside {
+#search {
+    display: none;
+    position: relative;
+    width: 100%;
     background-color: #1e293b;
-    padding: 25px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
+    margin-top: 20px;
+    border-top: 2px solid #334155;
+    z-index: 900;
+}
+
+#search input {
+    margin-bottom: 12px;
+}
+
+#advanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+#buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#aside {
+    display: none;
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    background-color: #1e293b;
+    padding: 30px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    margin-top: 20px;
+    border-top: 2px solid #334155;
+    z-index: 900;
+}
+
+/* Botão de Fechar do Aside */
+.btn-fechar-aside {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: #334155;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-fechar-aside:hover {
+    background: #ef4444;
+}
+
+/* Itens de TCC dentro do Aside */
+#aside .item {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 15px;
+}
+
+#aside .header h3 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#aside .header h3:hover {
+    color: #60a5fa;
+}
+
+#aside .hiddenDiv {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #1e293b;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+}
+
+#aside .downloadBtn {
+    margin-top: 10px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#aside .downloadBtn:hover {
+    background-color: #1d4ed8;
 }
 
 /* Painel de Cadastro */
@@ -150,9 +248,9 @@ input:focus {
 .btn-limpar {
     width: 100%;
     padding: 12px;
-    background-color: transparent; /* Fundo transparente */
-    color: #888; /* Cor cinza suave */
-    border: 1px solid #444; /* Borda sutil */
+    background-color: transparent;
+    color: #888;
+    border: 1px solid #444;
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 600;
@@ -163,7 +261,7 @@ input:focus {
 
 .btn-limpar:hover {
     background-color: #2b2d36;
-    color: #ff4c4c; /* Fica avermelhado ao passar o mouse */
+    color: #ff4c4c;
     border-color: #ff4c4c;
 }
 
@@ -191,7 +289,6 @@ path:hover {
     pointer-events: none;
 }
 
-/* Estilo base para os caminhos do SVG */
 path {
     stroke: #1a1a1a;
     stroke-width: 0.5px;
@@ -200,10 +297,10 @@ path {
 }
 
 /* ==========================================================================
-   PALETA OFICIAL POR MICRORREGIÃO (EXTRAÍDA DO MAPA DE REFERÊNCIA)
+   PALETA OFICIAL POR MICRORREGIÃO
    ========================================================================== */
 
-/* --- MESORREGIÃO OESTE POTIGUAR (Vermelhos / Laranjas / Salmão) --- */
+/* --- MESORREGIÃO OESTE POTIGUAR --- */
 .micro-serra-de-sao-miguel { fill: #c04033; }
 .micro-pau-dos-ferros      { fill: #5c0500; }
 .micro-umarizal            { fill: #bc422a; }
@@ -212,31 +309,28 @@ path {
 .micro-mossoro             { fill: #ef6453; }
 .micro-vale-do-acu         { fill: #fa5838; }
 
-/* --- MESORREGIÃO CENTRAL POTIGUAR (Azuis) --- */
+/* --- MESORREGIÃO CENTRAL POTIGUAR --- */
 .micro-macau               { fill: #1a334d; }
 .micro-angicos             { fill: #245277; }
 .micro-serra-de-santana    { fill: #3178e8; }
 .micro-serido-ocidental    { fill: #599cf0; }
 .micro-serido-oriental     { fill: #8cc4f8; }
 
-/* --- MESORREGIÃO AGRESTE POTIGUAR (Verdes) --- */
+/* --- MESORREGIÃO AGRESTE POTIGUAR --- */
 .micro-baixa-verde         { fill: #19522b; }
 .micro-borborema-potiguar  { fill: #1c914e; }
 .micro-agreste-potiguar    { fill: #50b680; }
 
-/* --- MESORREGIÃO LESTE POTIGUAR (Amarelos / Dourado / Creme) --- */
+/* --- MESORREGIÃO LESTE POTIGUAR --- */
 .micro-litoral-nordeste    { fill: #a58913; }
 .micro-macaiba             { fill: #d9a016; }
 .micro-natal               { fill: #ebb428; }
 .micro-litoral-sul         { fill: #fceb96; }
 
-/* Efeito de interatividade (Hover) Corrigido Definitivamente */
-/* Se houver hover no SVG, escurece todos os paths que NÃO estão sob o mouse */
 svg:has(path:hover) path:not(:hover) {
     opacity: 0.5;
 }
 
-/* O path que está sob o mouse mantém brilho total e ganha borda branca */
 svg path:hover {
     opacity: 1;
     stroke: #ffffff;

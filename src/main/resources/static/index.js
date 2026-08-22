@@ -17,7 +17,9 @@ async function executarBuscaAvancada() {
         discente: document.getElementById("discente").value.trim(),
         orientador: document.getElementById("orientador").value.trim(),
         examinador: document.getElementById("examinador").value.trim(),
-        municipio: document.getElementById("municipio").value.trim()
+        municipio: document.getElementById("municipio").value.trim(),
+        mesorregiao: document.getElementById("mesorregiao").value.trim(),
+        microrregiao: document.getElementById("microrregiao").value.trim()
     };
 
     const temFiltro = Object.values(filtros).some(valor => valor !== "");
@@ -44,13 +46,12 @@ async function executarBuscaAvancada() {
 
         if (Array.isArray(result)) {
             const aside = document.getElementById("aside");
-            aside.innerHTML = '<button onclick="hideAside()">X</button><h1 id="city">Resultados</h1><h1 id="resultNumber"></h1>';
+            aside.innerHTML = '<button class="btn-fechar-aside" onclick="hideAside()">✖</button><h1 id="city">Resultados da Busca</h1><h1 id="resultNumber"></h1>';
             document.getElementById("resultNumber").textContent = result.length + " encontrados";
 
             result.forEach((tcc, i) => createObject(tcc, i));
             aside.style.display = "block";
 
-            // Rola a tela suavemente até a barra lateral
             aside.scrollIntoView({ behavior: 'smooth' });
         }
     } catch (error) {
@@ -68,7 +69,7 @@ async function load(id) {
         const result = await response.json();
         const aside = document.getElementById("aside");
 
-        aside.innerHTML = '<button onclick="hideAside()">X</button><h1 id="city"></h1><h1 id="resultNumber"></h1>';
+        aside.innerHTML = '<button class="btn-fechar-aside" onclick="hideAside()">✖</button><h1 id="city"></h1><h1 id="resultNumber"></h1>';
         document.getElementById("city").textContent = id;
 
         if (Array.isArray(result)) {
@@ -99,7 +100,6 @@ function createObject(info, id) {
     div.className = "item";
     aside.appendChild(div);
 
-    // Header (Título clicável)
     const headerDiv = document.createElement("div");
     headerDiv.className = "header";
     headerDiv.addEventListener("click", () => toggleDetails(div), false);
@@ -111,7 +111,6 @@ function createObject(info, id) {
     }
     div.appendChild(headerDiv);
 
-    // Conteúdo escondido (Detalhes do TCC)
     const hiddenDiv = document.createElement("div");
     hiddenDiv.style.display = 'none';
     hiddenDiv.className = "hiddenDiv";
@@ -121,6 +120,8 @@ function createObject(info, id) {
         <p><strong>Discente:</strong> ${info.discente || 'N/A'}</p>
         <p><strong>Orientador:</strong> ${info.orientador || 'N/A'}</p>
         <p><strong>Município:</strong> ${info.municipio || 'N/A'}</p>
+        <p><strong>Mesorregião:</strong> ${info.mesorregiao || 'N/A'}</p>
+        <p><strong>Microrregião:</strong> ${info.microrregiao || 'N/A'}</p>
         <p><strong>Examinadores:</strong> ${info.examinador1 || ''} / ${info.examinador2 || ''}</p>
     `;
 
@@ -142,23 +143,18 @@ function createObject(info, id) {
 }
 
 function showName(param) {
-    // Tolerância: Se receber string (mapa antigo), busca o elemento. Se receber objeto (mapa novo), usa direto.
     const element = (typeof param === 'string') ? document.getElementById(param) : param;
-
     if (!element) return;
 
-    // Captura os dados novos do SVG
     const nomeMunicipio = element.id;
     const nomeMicro = element.getAttribute('data-micro') || '';
     const nomeMeso = element.getAttribute('data-meso') || '';
 
-    // Monta o texto de exibição
     let textoCompleto = nomeMunicipio;
     if (nomeMicro && nomeMeso) {
         textoCompleto = `${nomeMunicipio} — ${nomeMicro} (${nomeMeso})`;
     }
 
-    // Calcula a posição e exibe o popup
     const position = element.getBoundingClientRect();
     const popup = document.getElementById("popup");
 
@@ -181,7 +177,6 @@ function startDownload(urlPdf, tituloTCC) {
         alert("URL do PDF não encontrada para este TCC.");
         return;
     }
-    console.log(`Abrindo PDF do TCC: ${tituloTCC}`);
     window.open(urlPdf, '_blank');
 }
 
@@ -212,11 +207,12 @@ function toggleCadastro() {
 }
 
 function hideAside() {
-    document.getElementById("aside").style.display = "none";
+    const aside = document.getElementById("aside");
+    if (aside) aside.style.display = "none";
 }
 
 function clean() {
-    ["titulo", "discente", "orientador", "examinador", "municipio"].forEach(id => {
+    ["titulo", "discente", "orientador", "examinador", "municipio", "mesorregiao", "microrregiao"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
     });
@@ -225,22 +221,7 @@ function clean() {
 // Ciclo de Vida da Aplicação e Listeners Globais
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    // Alimenta dinamicamente o Datalist do formulário de cadastro com a API do IBGE
     carregarMunicipiosIBGE();
-
-    // Auto-completa /RN no campo município da BUSCA AVANÇADA ao perder o foco (blur)
-    const munInput = document.getElementById('municipio');
-    if (munInput) {
-        munInput.addEventListener('blur', (e) => {
-            let val = e.target.value.trim().toUpperCase();
-            if (val.length > 0 && !val.endsWith('/RN')) {
-                // Remove caso já tenha /RN de forma incorreta ou incompleta e adiciona o padrão
-                val = val.replace(/\/RN/gi, '');
-                e.target.value = val + "/RN";
-            }
-        });
-    }
 
     // Manipulação do Envio do Formulário de Cadastro
     const form = document.getElementById('formCadastroTcc');
@@ -248,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Proteção contra duplo clique: Desabilita o botão
             const btnSubmit = e.target.querySelector('button[type="submit"]');
             if (btnSubmit) {
                 btnSubmit.disabled = true;
@@ -266,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok) {
                     alert("TCC cadastrado com sucesso!");
                     e.target.reset();
-                    toggleCadastro(); // Fecha o formulário após sucesso
+                    toggleCadastro();
                 } else {
                     const erro = await response.text();
                     alert("Erro ao cadastrar: " + erro);
@@ -275,7 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erro:", err);
                 alert("Falha na conexão com o servidor.");
             } finally {
-                // Reabilita o botão para permitir novas tentativas ou cadastros
                 if (btnSubmit) {
                     btnSubmit.disabled = false;
                     btnSubmit.innerText = "Enviar";
@@ -285,23 +264,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-/**
- * Consome de forma assíncrona os dados oficiais do Governo Federal (IBGE)
- * e injeta ordenado de A-Z e em caixa alta na UI.
- */
 function carregarMunicipiosIBGE() {
     fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/RN/municipios')
         .then(response => response.json())
         .then(cidades => {
             const datalist = document.getElementById('lista-municipios-rn');
-
-            // Trava de segurança: se a página não carregar este formulário específico, evita erros no console.
             if (!datalist) return;
 
             cidades
                 .sort((a, b) => a.nome.localeCompare(b.nome))
                 .forEach(cidade => {
                     const option = document.createElement('option');
+                    // Mantém o nome puro sem adicionar "/RN" para bater com o banco de dados
                     option.value = cidade.nome.toUpperCase();
                     datalist.appendChild(option);
                 });

@@ -21,13 +21,16 @@ public class Tcc {
     private String examinador1;
     private String examinador2;
     private String municipio;
+    private String mesorregiao;
+    private String microrregiao;
 
     @Column(name = "url_pdf")
     private String urlPdf;
 
     public Tcc() {
     }
-    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String urlPdf) {
+
+    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, String urlPdf) {
         this.id = id;
         this.dataDefesa = dataDefesa;
         this.discente = discente;
@@ -37,6 +40,8 @@ public class Tcc {
         this.examinador1 = examinador1;
         this.examinador2 = examinador2;
         this.municipio = municipio;
+        this.mesorregiao = mesorregiao;
+        this.microrregiao = microrregiao;
         this.urlPdf = urlPdf;
     }
 
@@ -145,5 +150,21 @@ public class Tcc {
 
     public void setUrlPdf(String urlPdf) {
         this.urlPdf = urlPdf;
+    }
+
+    public String getMesorregiao() {
+        return mesorregiao;
+    }
+
+    public void setMesorregiao(String mesorregiao) {
+        this.mesorregiao = mesorregiao;
+    }
+
+    public String getMicrorregiao() {
+        return microrregiao;
+    }
+
+    public void setMicrorregiao(String microrregiao) {
+        this.microrregiao = microrregiao;
     }
 }

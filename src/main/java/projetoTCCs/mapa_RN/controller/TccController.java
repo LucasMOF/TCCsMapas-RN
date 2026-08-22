@@ -36,9 +36,12 @@ public class TccController {
             @RequestParam(required = false) String discente,
             @RequestParam(required = false) String orientador,
             @RequestParam(required = false) String municipio,
-            @RequestParam(required = false) String examinador) {
+            @RequestParam(required = false) String mesorregiao,
+            @RequestParam(required = false) String microrregiao,
+            @RequestParam(required = false) String examinador
+    ) {
 
-        return service.buscarAvancada(titulo, discente, orientador, municipio, examinador);
+        return service.buscarAvancada(titulo, discente, orientador, municipio, mesorregiao, microrregiao, examinador);
     }
 
     // Endpoint para o Mapa

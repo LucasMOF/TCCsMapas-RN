@@ -22,8 +22,8 @@ public class TccService {
         return repository.findByMunicipioContainingIgnoreCase(municipio);
     }
 
-    public List<Tcc> buscarAvancada(String titulo, String discente, String orientador, String municipio, String examinador) {
-        return repository.buscarAvancada(titulo, discente, orientador, municipio, examinador);
+    public List<Tcc> buscarAvancada(String titulo, String discente, String orientador, String municipio,String mesorregiao, String microrregiao, String examinador) {
+        return repository.buscarAvancada(titulo, discente, orientador, municipio, mesorregiao, microrregiao ,examinador);
     }
 
     public Tcc cadastrar(RequestTccDTO dto) throws Exception {
@@ -112,6 +112,8 @@ public class TccService {
         tcc.setTitulo(dto.titulo() != null ? dto.titulo().toUpperCase().trim() : null);
         tcc.setOrientador(dto.orientador() != null ? dto.orientador().toUpperCase().trim() : null);
         tcc.setMunicipio(dto.municipio() != null ? dto.municipio().toUpperCase().trim() : null);
+        tcc.setMesorregiao(dto.mesorregiao() != null ? dto.mesorregiao().toUpperCase().trim() : null);
+        tcc.setMicrorregiao(dto.microrregiao() != null ? dto.microrregiao().toUpperCase().trim() : null);
         tcc.setExaminador1(dto.examinador1() != null ? dto.examinador1().toUpperCase().trim() : null);
         tcc.setExaminador2(dto.examinador2() != null ? dto.examinador2().toUpperCase().trim() : null);
         tcc.setEmail(dto.email());

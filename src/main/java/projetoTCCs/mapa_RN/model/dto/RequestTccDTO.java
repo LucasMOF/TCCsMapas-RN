@@ -27,6 +27,11 @@ public record RequestTccDTO(
         @NotBlank(message = "O município é obrigatório")
         String municipio,
 
+        @NotBlank(message = "A mesorregião é obrigatório")
+        String mesorregiao,
+        @NotBlank(message = "A microrregião é obrigatório")
+        String microrregiao,
+
         MultipartFile file
 
 

@@ -1,5 +1,4 @@
-
- // Inicialização e Eventos do Mapa
+// Inicialização e Eventos do Mapa
 
 function onload() {
     const paths = document.getElementsByTagName("path");
@@ -8,8 +7,7 @@ function onload() {
     }
 }
 
- // Regras de Negócio e Mecanismos de Busca
-
+// Regras de Negócio e Mecanismos de Busca
 
 async function executarBuscaAvancada() {
     console.log("Iniciando busca avançada...");
@@ -90,7 +88,7 @@ async function load(id) {
     }
 }
 
- // Manipulação do DOM e Elementos de Interface (UI)
+// Manipulação do DOM e Elementos de Interface (UI)
 
 function createObject(info, id) {
     const aside = document.getElementById("aside");
@@ -143,14 +141,31 @@ function createObject(info, id) {
     div.appendChild(hiddenDiv);
 }
 
-function showName(id) {
-    const element = document.getElementById(id);
+function showName(param) {
+    // Tolerância: Se receber string (mapa antigo), busca o elemento. Se receber objeto (mapa novo), usa direto.
+    const element = (typeof param === 'string') ? document.getElementById(param) : param;
+
     if (!element) return;
+
+    // Captura os dados novos do SVG
+    const nomeMunicipio = element.id;
+    const nomeMicro = element.getAttribute('data-micro') || '';
+    const nomeMeso = element.getAttribute('data-meso') || '';
+
+    // Monta o texto de exibição
+    let textoCompleto = nomeMunicipio;
+    if (nomeMicro && nomeMeso) {
+        textoCompleto = `${nomeMunicipio} — ${nomeMicro} (${nomeMeso})`;
+    }
+
+    // Calcula a posição e exibe o popup
     const position = element.getBoundingClientRect();
     const popup = document.getElementById("popup");
+
     popup.style.top = (position.top < 70) ? (position.top + 70 + "px") : (position.top - 70 + "px");
     popup.style.left = (position.left - 10) + "px";
-    popup.textContent = id;
+
+    popup.textContent = textoCompleto;
     popup.style.display = "block";
 }
 
@@ -159,7 +174,7 @@ function hideName() {
     if (popup) popup.style.display = "none";
 }
 
- // Funções Utilitárias e Alternadores de Escopo (Toggles)
+// Funções Utilitárias e Alternadores de Escopo (Toggles)
 
 function startDownload(urlPdf, tituloTCC) {
     if (!urlPdf) {
@@ -207,7 +222,7 @@ function clean() {
     });
 }
 
- // Ciclo de Vida da Aplicação e Listeners Globais
+// Ciclo de Vida da Aplicação e Listeners Globais
 
 document.addEventListener("DOMContentLoaded", () => {
 

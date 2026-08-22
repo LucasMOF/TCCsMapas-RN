@@ -190,3 +190,55 @@ path:hover {
     border: 1px solid #475569;
     pointer-events: none;
 }
+
+/* Estilo base para os caminhos do SVG */
+path {
+    stroke: #1a1a1a;
+    stroke-width: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   PALETA OFICIAL POR MICRORREGIÃO (EXTRAÍDA DO MAPA DE REFERÊNCIA)
+   ========================================================================== */
+
+/* --- MESORREGIÃO OESTE POTIGUAR (Vermelhos / Laranjas / Salmão) --- */
+.micro-serra-de-sao-miguel { fill: #c04033; }
+.micro-pau-dos-ferros      { fill: #5c0500; }
+.micro-umarizal            { fill: #bc422a; }
+.micro-chapada-do-apodi    { fill: #e53c29; }
+.micro-medio-oeste         { fill: #ee8a79; }
+.micro-mossoro             { fill: #ef6453; }
+.micro-vale-do-acu         { fill: #fa5838; }
+
+/* --- MESORREGIÃO CENTRAL POTIGUAR (Azuis) --- */
+.micro-macau               { fill: #1a334d; }
+.micro-angicos             { fill: #245277; }
+.micro-serra-de-santana    { fill: #3178e8; }
+.micro-serido-ocidental    { fill: #599cf0; }
+.micro-serido-oriental     { fill: #8cc4f8; }
+
+/* --- MESORREGIÃO AGRESTE POTIGUAR (Verdes) --- */
+.micro-baixa-verde         { fill: #19522b; }
+.micro-borborema-potiguar  { fill: #1c914e; }
+.micro-agreste-potiguar    { fill: #50b680; }
+
+/* --- MESORREGIÃO LESTE POTIGUAR (Amarelos / Dourado / Creme) --- */
+.micro-litoral-nordeste    { fill: #a58913; }
+.micro-macaiba             { fill: #d9a016; }
+.micro-natal               { fill: #ebb428; }
+.micro-litoral-sul         { fill: #fceb96; }
+
+/* Efeito de interatividade (Hover) Corrigido Definitivamente */
+/* Se houver hover no SVG, escurece todos os paths que NÃO estão sob o mouse */
+svg:has(path:hover) path:not(:hover) {
+    opacity: 0.5;
+}
+
+/* O path que está sob o mouse mantém brilho total e ganha borda branca */
+svg path:hover {
+    opacity: 1;
+    stroke: #ffffff;
+    stroke-width: 1.5px;
+}

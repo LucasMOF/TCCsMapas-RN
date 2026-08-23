@@ -38,9 +38,3 @@ bin/
 # Arquivos do Sistema Operacional
 .DS_Store
 Thumbs.db
-
-# SEGREDO: Ignorar o arquivo de configuração real
-application.properties
-
-# Mas manter o arquivo de exemplo para o seu colega
-!application.properties.example

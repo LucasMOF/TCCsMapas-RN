@@ -531,6 +531,96 @@
               data-meso="Agreste Potiguar" data-micro="Agreste Potiguar" class="micro-agreste-potiguar"></path>
     </svg>
 
+    <!-- LEGENDA DETALHADA DO MAPA -->
+    <div id="map-legend">
+        <!-- O cabeçalho agora tem um evento de clique -->
+        <div class="legend-header" onclick="toggleLegend()" title="Clique para minimizar/expandir">
+            <h3>Legenda Mapa RN</h3>
+            <button id="btn-toggle-legend">━</button>
+        </div>
+
+        <div id="legend-content">
+            <!-- OESTE POTIGUAR -->
+            <div class="meso-section oeste">
+                <h4>Oeste Potiguar <span>(Tons de Vermelho)</span></h4>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="color-box" style="background-color: #5c0500;"></span>Pau dos
+                        Ferros
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #c04033;"></span>Serra de
+                        São Miguel
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #bc422a;"></span>Umarizal
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #e53c29;"></span>Chapada
+                        do Apodi
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #fa5838;"></span>Vale do
+                        Açu
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #ef6453;"></span>Mossoró
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #ee8a79;"></span>Médio
+                        Oeste
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTRAL POTIGUAR -->
+            <div class="meso-section central">
+                <h4>Central Potiguar <span>(Tons de Azul)</span></h4>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="color-box" style="background-color: #1a334d;"></span>Macau
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #245277;"></span>Angicos
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #3178e8;"></span>Serra de
+                        Santana
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #599cf0;"></span>Seridó
+                        Ocidental
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #8cc4f8;"></span>Seridó
+                        Oriental
+                    </div>
+                </div>
+            </div>
+
+            <!-- AGRESTE POTIGUAR -->
+            <div class="meso-section agreste">
+                <h4>Agreste Potiguar <span>(Tons de Verde)</span></h4>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="color-box" style="background-color: #19522b;"></span>Baixa
+                        Verde
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #1c914e;"></span>Borborema
+                        Potiguar
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #50b680;"></span>Agreste
+                        Potiguar
+                    </div>
+                </div>
+            </div>
+
+            <!-- LESTE POTIGUAR -->
+            <div class="meso-section leste">
+                <h4>Leste Potiguar <span>(Tons de Amarelo/Creme)</span></h4>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="color-box" style="background-color: #a58913;"></span>Litoral
+                        Nordeste
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #d9a016;"></span>Macaíba
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #ebb428;"></span>Natal
+                    </div>
+                    <div class="legend-item"><span class="color-box" style="background-color: #fceb96;"></span>Litoral
+                        Sul
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="search" style="display: none;">
         <button onclick="toggleSearch()">X</button>
         <input id="titulo" type="text" placeholder="Título">
@@ -600,6 +690,6 @@
         </form>
     </section>
 </section>
-    <script src="index.js"></script>
+<script src="index.js"></script>
 </body>
 </html>

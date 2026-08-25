@@ -52,7 +52,7 @@ async function executarBuscaAvancada() {
             result.forEach((tcc, i) => createObject(tcc, i));
             aside.style.display = "block";
 
-            aside.scrollIntoView({ behavior: 'smooth' });
+            aside.scrollIntoView({behavior: 'smooth'});
         }
     } catch (error) {
         console.error("Erro na busca:", error);
@@ -77,12 +77,12 @@ async function load(id) {
             result.forEach((tcc, index) => createObject(tcc, index));
             aside.style.display = "block";
 
-            aside.scrollIntoView({ behavior: 'smooth' });
+            aside.scrollIntoView({behavior: 'smooth'});
         } else {
             console.error("Formato de resposta inesperado:", result);
             document.getElementById("resultNumber").textContent = "Erro no formato dos dados";
             aside.style.display = "block";
-            aside.scrollIntoView({ behavior: 'smooth' });
+            aside.scrollIntoView({behavior: 'smooth'});
         }
     } catch (error) {
         console.error("Erro ao buscar por município:", error);
@@ -192,7 +192,7 @@ function toggleSearch() {
     if (el) {
         if (window.getComputedStyle(el).display === "none") {
             el.style.display = "flex";
-            el.scrollIntoView({ behavior: 'smooth' });
+            el.scrollIntoView({behavior: 'smooth'});
         } else {
             el.style.display = "none";
         }
@@ -281,4 +281,19 @@ function carregarMunicipiosIBGE() {
                 });
         })
         .catch(erro => console.error("Erro ao carregar municípios do IBGE:", erro));
+}
+
+function toggleLegend() {
+    const legend = document.getElementById("map-legend");
+    const btn = document.getElementById("btn-toggle-legend");
+
+    // Alterna a classe 'minimized'
+    legend.classList.toggle("minimized");
+
+    // Muda o ícone do botão dependendo do estado
+    if (legend.classList.contains("minimized")) {
+        btn.textContent = "＋";
+    } else {
+        btn.textContent = "━";
+    }
 }

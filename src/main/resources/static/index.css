@@ -339,3 +339,129 @@ svg path:hover {
     stroke: #ffffff;
     stroke-width: 1.5px;
 }
+
+/* ==========================================================================
+   LEGENDA DETALHADA DO MAPA
+   ========================================================================== */
+#map-legend {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 280px;
+    max-height: 70vh; /* Se a legenda for maior que a tela, ela ganha scroll */
+    overflow-y: auto;
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    border: 1px solid #334155;
+    color: #f8fafc;
+    z-index: 800;
+}
+
+/* Estilização da barra de rolagem dentro da legenda */
+#map-legend::-webkit-scrollbar {
+    width: 6px;
+}
+#map-legend::-webkit-scrollbar-thumb {
+    background-color: #475569;
+    border-radius: 4px;
+}
+
+.legend-header {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+}
+
+.legend-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #e2e8f0;
+}
+
+.meso-section {
+    margin-bottom: 20px;
+}
+
+.meso-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Configuração base da barrinha lateral (sem cor definida ainda) */
+.meso-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    border-left: 3px solid; /* Mantém a espessura de 3px, mas a cor vem das classes abaixo */
+    padding-left: 8px;
+}
+
+/* Cores dinâmicas da barrinha para cada Mesorregião */
+.meso-section.oeste h4   { border-left-color: #fa5838; } /* Vermelho */
+.meso-section.central h4 { border-left-color: #3178e8; } /* Azul */
+.meso-section.agreste h4 { border-left-color: #50b680; } /* Verde */
+.meso-section.leste h4   { border-left-color: #ebb428; } /* Amarelo */
+
+/* Estilo do subtítulo (Mantido igual) */
+.meso-section h4 span {
+    display: block;
+    font-weight: normal;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+.legend-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+}
+
+.color-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    margin-right: 10px;
+    display: inline-block;
+    border: 1px solid #0f172a;
+    flex-shrink: 0; /* Impede que a cor amasse se o nome for grande */
+}
+
+/* Atualize a classe do header para ficar lado a lado e com o cursor de mãozinha */
+.legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+    cursor: pointer; /* Mostra que é clicável */
+}
+
+/* Estilo do botãozinho de +/- */
+#btn-toggle-legend {
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Regra mágica: Quando a legenda ganha a classe 'minimized', esconde o conteúdo e zera a margem */
+#map-legend.minimized #legend-content {
+    display: none;
+}
+#map-legend.minimized .legend-header {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}

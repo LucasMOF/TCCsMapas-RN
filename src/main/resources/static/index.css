@@ -7,8 +7,8 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #0f172a; /* Fundo base escuro azulado para combinar com os painéis */
+    color: #e2e8f0;
 }
 
 svg {
@@ -50,23 +50,33 @@ svg {
 }
 
 .btn-primario {
-    background-color: #007bff;
+    background-color: #2563eb; /* Azul padrão unificado */
     color: #ffffff;
 }
 
 .btn-primario:hover {
-    background-color: #0056b3;
+    background-color: #1d4ed8;
+}
+
+.btn-secundario {
+    background-color: #334155;
+    color: #ffffff;
+}
+
+.btn-secundario:hover {
+    background-color: #475569;
 }
 
 /* ==========================================================================
-   BARRA DE BUSCA AVANÇADA (#search) E RESULTADOS (#aside)
+   BARRA DE BUSCA AVANÇADA (#search)
    ========================================================================== */
 #search {
     display: none;
+    flex-direction: column; /* Força os itens a ficarem um embaixo do outro */
     position: relative;
     width: 100%;
-    background-color: #1e293b;
-    padding: 30px;
+    background-color: #1e293b; /* Padrão de painel */
+    padding: 40px 30px 30px; /* Mais espaço no topo para o botão X não encostar no texto */
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
     margin-top: 20px;
@@ -74,28 +84,58 @@ svg {
     z-index: 900;
 }
 
-#search input {
-    margin-bottom: 12px;
+/* O botão X do formulário de busca (Limpo e Transparente) */
+#search > button:first-child {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
+#search > button:first-child:hover {
+    background: transparent;
+    color: #ef4444;
+}
+
+/* Input Título Ocupando a primeira linha toda */
+#search input#titulo {
+    width: 100%;
+    margin-bottom: 20px;
+    height: auto;
+}
+
+/* Grid para os campos avançados */
 #advanced {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 12px;
-    margin-bottom: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
 }
 
+/* Área dos Botões Pesquisar e Limpar */
 #buttons {
     display: flex;
-    gap: 10px;
+    justify-content: flex-end; /* Joga os botões para a direita */
+    gap: 15px;
+    width: 100%;
 }
 
+/* ==========================================================================
+   RESULTADOS (#aside)
+   ========================================================================== */
 #aside {
     display: none;
     position: relative;
     width: 100%;
     min-height: 250px;
-    background-color: #1e293b;
+    background-color: #1e293b; /* Padrão de painel */
     padding: 30px;
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
@@ -126,7 +166,7 @@ svg {
 
 /* Itens de TCC dentro do Aside */
 #aside .item {
-    background-color: #0f172a;
+    background-color: #0f172a; /* Contraste sutil com o painel */
     border: 1px solid #334155;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -161,26 +201,29 @@ svg {
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.2s;
 }
 
 #aside .downloadBtn:hover {
     background-color: #1d4ed8;
 }
 
-/* Painel de Cadastro */
+/* ==========================================================================
+   PAINEL DE CADASTRO
+   ========================================================================== */
 .painel-flutuante {
     display: none;
     position: absolute;
     top: 20px;
     right: 20px;
     width: 420px;
-    background-color: #1e1e24;
+    background-color: #1e293b; /* Padrão de painel */
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid #334155;
     z-index: 1000;
-    color: #f1f1f1;
+    color: #f8fafc;
 }
 
 .form-header {
@@ -190,12 +233,23 @@ svg {
     margin-bottom: 20px;
 }
 
+.form-header h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.25rem;
+}
+
 .btn-fechar {
     background: none;
     border: none;
-    color: #fff;
+    color: #94a3b8;
     font-size: 1.5rem;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-fechar:hover {
+    color: #ef4444;
 }
 
 .input-group {
@@ -212,7 +266,9 @@ svg {
     flex: 1;
 }
 
-/* Estilização dos Inputs */
+/* ==========================================================================
+   ESTILIZAÇÃO UNIFICADA DE INPUTS E BOTÕES
+   ========================================================================== */
 input[type="text"],
 input[type="email"],
 input[type="datetime-local"],
@@ -220,51 +276,71 @@ input[type="file"],
 input[list] {
     width: 100% !important;
     padding: 12px;
-    border: 1px solid #444;
+    border: 1px solid #334155;
     border-radius: 6px;
-    background-color: #2b2d36;
-    color: #fff;
+    background-color: #0f172a; /* Contraste escuro padrão */
+    color: #e2e8f0;
     box-sizing: border-box;
     font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+input::placeholder {
+    color: #94a3b8;
 }
 
 input:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
 }
 
-.btn-enviar {
+.btn-enviar, #searchBtn {
     width: 100%;
     padding: 14px;
-    background-color: #007bff;
+    background-color: #2563eb;
     color: white;
     border: none;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
     margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-enviar:hover, #searchBtn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Ajuste específico para os botões do painel de busca */
+#searchBtn, #clear {
+    width: auto;
+    min-width: 140px;
+    margin-top: 0;
 }
 
 /* Estilo específico para o botão de limpar */
-.btn-limpar {
-    width: 100%;
+.btn-limpar, #clear {
     padding: 12px;
     background-color: transparent;
-    color: #888;
-    border: 1px solid #444;
+    color: #94a3b8;
+    border: 1px solid #334155;
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 10px;
     transition: all 0.2s;
 }
 
-.btn-limpar:hover {
-    background-color: #2b2d36;
-    color: #ff4c4c;
-    border-color: #ff4c4c;
+.btn-limpar {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-limpar:hover, #clear:hover {
+    background-color: #0f172a;
+    color: #ef4444;
+    border-color: #ef4444;
 }
 
 /* ==========================================================================
@@ -284,12 +360,13 @@ path:hover {
     display: none;
     position: fixed;
     z-index: 2000;
-    background-color: #1e293b;
+    background-color: #1e293b; /* Padrão de painel */
     color: #f8fafc;
     padding: 6px 12px;
     border-radius: 4px;
-    border: 1px solid #475569;
+    border: 1px solid #334155;
     pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
 path {
@@ -348,9 +425,9 @@ svg path:hover {
     bottom: 20px;
     right: 20px;
     width: 280px;
-    max-height: 70vh; /* Se a legenda for maior que a tela, ela ganha scroll */
+    max-height: 70vh;
     overflow-y: auto;
-    background-color: #1e293b;
+    background-color: #1e293b; /* Padrão de painel */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
@@ -359,7 +436,6 @@ svg path:hover {
     z-index: 800;
 }
 
-/* Estilização da barra de rolagem dentro da legenda */
 #map-legend::-webkit-scrollbar {
     width: 6px;
 }
@@ -369,15 +445,28 @@ svg path:hover {
 }
 
 .legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
     border-bottom: 1px solid #334155;
     padding-bottom: 10px;
+    cursor: pointer;
 }
 
 .legend-header h3 {
     margin: 0;
     font-size: 1.1rem;
     color: #e2e8f0;
+}
+
+#btn-toggle-legend {
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .meso-section {
@@ -388,22 +477,19 @@ svg path:hover {
     margin-bottom: 0;
 }
 
-/* Configuração base da barrinha lateral (sem cor definida ainda) */
 .meso-section h4 {
     margin: 0 0 10px 0;
     font-size: 0.9rem;
     color: #e2e8f0;
-    border-left: 3px solid; /* Mantém a espessura de 3px, mas a cor vem das classes abaixo */
+    border-left: 3px solid;
     padding-left: 8px;
 }
 
-/* Cores dinâmicas da barrinha para cada Mesorregião */
-.meso-section.oeste h4   { border-left-color: #fa5838; } /* Vermelho */
-.meso-section.central h4 { border-left-color: #3178e8; } /* Azul */
-.meso-section.agreste h4 { border-left-color: #50b680; } /* Verde */
-.meso-section.leste h4   { border-left-color: #ebb428; } /* Amarelo */
+.meso-section.oeste h4   { border-left-color: #fa5838; }
+.meso-section.central h4 { border-left-color: #3178e8; }
+.meso-section.agreste h4 { border-left-color: #50b680; }
+.meso-section.leste h4   { border-left-color: #ebb428; }
 
-/* Estilo do subtítulo (Mantido igual) */
 .meso-section h4 span {
     display: block;
     font-weight: normal;
@@ -432,31 +518,10 @@ svg path:hover {
     margin-right: 10px;
     display: inline-block;
     border: 1px solid #0f172a;
-    flex-shrink: 0; /* Impede que a cor amasse se o nome for grande */
+    flex-shrink: 0;
 }
 
-/* Atualize a classe do header para ficar lado a lado e com o cursor de mãozinha */
-.legend-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #334155;
-    padding-bottom: 10px;
-    cursor: pointer; /* Mostra que é clicável */
-}
-
-/* Estilo do botãozinho de +/- */
-#btn-toggle-legend {
-    background: none;
-    border: none;
-    color: #e2e8f0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Regra mágica: Quando a legenda ganha a classe 'minimized', esconde o conteúdo e zera a margem */
+/* Regra de minimização da legenda */
 #map-legend.minimized #legend-content {
     display: none;
 }

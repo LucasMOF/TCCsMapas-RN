@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import projetoTCCs.mapa_RN.model.Tcc;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TccRepository extends JpaRepository<Tcc, Long> {
 
@@ -42,4 +43,7 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
     );
 
     boolean existsByTituloAndDiscente(String titulo, String discente);
+
+    @Query("SELECT t.municipio AS municipio, COUNT(t) AS total FROM Tcc t GROUP BY t.municipio")
+    List<Map<String, Object>> contarTccsPorMunicipio();
 }

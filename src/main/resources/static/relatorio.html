@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de TCCs - RN</title>
+    <!-- Reaproveitamos o CSS oficial para manter as cores -->
+    <link rel="stylesheet" href="index.css">
+    <style>
+        /* Estilos específicos só para organizar a página do relatório */
+        .container-relatorio {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid #334155;
+        }
+        .cabecalho-relatorio {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .cabecalho-relatorio h1 { margin: 0; font-size: 1.5rem; color: #f8fafc; }
+
+        .relatorio-lista { list-style: none; padding: 0; margin: 0; }
+        .relatorio-item {
+            display: flex; justify-content: space-between; padding: 12px 15px;
+            border-bottom: 1px solid #334155; font-size: 1rem;
+        }
+        .relatorio-item:hover { background-color: #0f172a; }
+        .relatorio-item.zero-tccs { color: #ef4444; font-weight: 600; }
+
+        .badge-tcc {
+            background-color: #2563eb; color: white; padding: 4px 12px;
+            border-radius: 12px; font-size: 0.9rem; font-weight: bold;
+        }
+        .badge-tcc.zero { background-color: #334155; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="container-relatorio">
+    <div class="cabecalho-relatorio">
+        <h1>Relatório de TCCs por Município</h1>
+        <a href="index.html" class="btn btn-secundario" style="width: auto; text-decoration: none;">⬅ Voltar ao Mapa</a>
+    </div>
+
+    <div id="conteudo-relatorio">
+        <p style="text-align:center; padding: 20px;">Carregando relatório...</p>
+    </div>
+</div>
+
+<!-- COLE O SEU DATALIST AQUI (Escondido) para o JS saber todos os nomes dos municípios -->
+<datalist id="lista-municipios-rn">
+    <!-- Cole as options dos seus municipios aqui -->
+</datalist>
+
+<script src="relatorio.js"></script>
+</body>
+</html>

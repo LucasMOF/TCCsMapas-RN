@@ -102,6 +102,10 @@ public class TccService {
         return response;
     }
 
+    public List<Map<String, Object>> gerarRelatorioMunicipios() {
+        return repository.contarTccsPorMunicipio();
+    }
+
     // ====================================================================
     //                     MÉTODOS PRIVADOS AUXILIARES
     // ====================================================================

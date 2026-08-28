@@ -82,4 +82,10 @@ public class TccController {
             return ResponseEntity.internalServerError().body("Erro ao salvar o TCC: " + e.getMessage());
         }
     }
+
+    @GetMapping("/relatorio-municipios")
+    public ResponseEntity<List<Map<String, Object>>> relatorioMunicipios() {
+        List<Map<String, Object>> relatorio = service.gerarRelatorioMunicipios();
+        return ResponseEntity.ok(relatorio);
+    }
 }

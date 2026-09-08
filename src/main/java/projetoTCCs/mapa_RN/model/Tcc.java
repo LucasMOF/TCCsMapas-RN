@@ -52,6 +52,8 @@ public class Tcc {
         if (this.discente != null) this.discente = this.discente.toUpperCase();
         if (this.titulo != null) this.titulo = this.titulo.toUpperCase();
         if (this.orientador != null) this.orientador = this.orientador.toUpperCase();
+        if (this.mesorregiao != null) this.mesorregiao = this.mesorregiao.toUpperCase();
+        if (this.microrregiao != null) this.microrregiao = this.microrregiao.toUpperCase();
 
         // Lógica Segura para Data
         if (this.dataDefesa != null && !this.dataDefesa.isEmpty()) {
@@ -62,14 +64,6 @@ public class Tcc {
             }
         }
 
-        // Padronização do Município
-        if (this.municipio != null) {
-            String mun = this.municipio.toUpperCase().trim();
-            // Remove qualquer /RN existente para não ficar /RN/RN
-            mun = mun.replace("/RN", "");
-            // Adiciona o /RN corretamente
-            this.municipio = mun + "/RN";
-        }
     }
 
     public Long getId() {

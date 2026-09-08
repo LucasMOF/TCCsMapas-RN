@@ -220,14 +220,40 @@ function clean() {
 
 // Ciclo de Vida da Aplicação e Listeners Globais
 
+let listaCidadesGlobal = [];
+
 document.addEventListener("DOMContentLoaded", () => {
     carregarMunicipiosIBGE();
 
-    // Manipulação do Envio do Formulário de Cadastro
+    // Configuração dos inputs de busca interativos com checkboxes
+    configurarBuscaCheckbox('busca-municipio', 'lista-checkbox-municipios', 'input-municipio-selecionado');
+    configurarBuscaCheckbox('busca-microrregiao', 'lista-checkbox-microrregioes', 'input-microrregiao-selecionado');
+
+    // Manipulação do Envio do Formulário de Cadastro com Validação Rigorosa
     const form = document.getElementById('formCadastroTcc');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // Validações obrigatórias no Front-end antes do envio
+            const titulo = form.querySelector('input[name="titulo"]').value.trim();
+            const mesorregiaoEl = form.querySelector('input[name="mesorregiao"]:checked');
+            const microrregiao = document.getElementById('input-microrregiao-selecionado').value.trim();
+
+            if (!titulo || titulo.length < 5) {
+                alert("O título do TCC é obrigatório e deve ter pelo menos 5 caracteres.");
+                return;
+            }
+
+            if (!mesorregiaoEl) {
+                alert("A Mesorregião é obrigatória. Selecione uma opção.");
+                return;
+            }
+
+            if (!microrregiao) {
+                alert("A Microrregião é obrigatória. Selecione uma opção na lista.");
+                return;
+            }
 
             const btnSubmit = e.target.querySelector('button[type="submit"]');
             if (btnSubmit) {
@@ -244,8 +270,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (response.ok) {
-                    alert("TCC cadastrado com sucesso!");
+                    alert("Cadastro realizado com sucesso! Seu TCC passará por uma curadoria da nossa equipe e você será notificado via e-mail (caso tenha informado).");
                     e.target.reset();
+                    document.getElementById('input-municipio-selecionado').value = "";
+                    document.getElementById('input-microrregiao-selecionado').value = "";
+                    document.getElementById('busca-municipio').value = "";
+                    document.getElementById('busca-microrregiao').value = "";
                     toggleCadastro();
                 } else {
                     const erro = await response.text();
@@ -257,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } finally {
                 if (btnSubmit) {
                     btnSubmit.disabled = false;
-                    btnSubmit.innerText = "Enviar";
+                    btnSubmit.innerText = "Cadastrar TCC";
                 }
             }
         });
@@ -268,29 +298,92 @@ function carregarMunicipiosIBGE() {
     fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/RN/municipios')
         .then(response => response.json())
         .then(cidades => {
-            const datalist = document.getElementById('lista-municipios-rn');
-            if (!datalist) return;
+            listaCidadesGlobal = cidades.map(c => c.nome.toUpperCase());
 
-            cidades
-                .sort((a, b) => a.nome.localeCompare(b.nome))
-                .forEach(cidade => {
-                    const option = document.createElement('option');
-                    // Mantém o nome puro sem adicionar "/RN" para bater com o banco de dados
-                    option.value = cidade.nome.toUpperCase();
-                    datalist.appendChild(option);
-                });
+            const datalist = document.getElementById('lista-municipios-rn');
+            if (datalist) {
+                cidades
+                    .sort((a, b) => a.nome.localeCompare(b.nome))
+                    .forEach(cidade => {
+                        const option = document.createElement('option');
+                        option.value = cidade.nome.toUpperCase();
+                        datalist.appendChild(option);
+                    });
+            }
         })
         .catch(erro => console.error("Erro ao carregar municípios do IBGE:", erro));
+}
+
+// Função que cria o comportamento dinâmico de digitar e selecionar via checkbox
+function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) {
+    const inputTexto = document.getElementById(idInputTexto);
+    const containerLista = document.getElementById(idContainerLista);
+    const inputHidden = document.getElementById(idInputHidden);
+
+    if (!inputTexto || !containerLista || !inputHidden) return;
+
+    inputTexto.addEventListener('input', () => {
+        const termo = inputTexto.value.trim().toUpperCase();
+        containerLista.innerHTML = '';
+
+        if (termo.length === 0) {
+            containerLista.style.display = 'none';
+            inputHidden.value = '';
+            return;
+        }
+
+        const filtrados = listaCidadesGlobal.filter(item => item.includes(termo));
+
+        if (filtrados.length === 0) {
+            containerLista.style.display = 'none';
+            return;
+        }
+
+        containerLista.style.display = 'block';
+
+        filtrados.forEach(nome => {
+            const label = document.createElement('label');
+            label.style.cssText = "display: flex; align-items: center; gap: 8px; padding: 6px; color: #e2e8f0; font-size: 0.85rem; cursor: pointer;";
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'opcao-checkbox';
+            checkbox.value = nome;
+
+            checkbox.addEventListener('change', (e) => {
+                containerLista.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    if (cb !== checkbox) cb.checked = false;
+                });
+
+                if (e.target.checked) {
+                    inputTexto.value = nome;
+                    inputHidden.value = nome;
+                    containerLista.style.display = 'none';
+                } else {
+                    inputTexto.value = '';
+                    inputHidden.value = '';
+                }
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(nome));
+            containerLista.appendChild(label);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!inputTexto.contains(e.target) && !containerLista.contains(e.target)) {
+            containerLista.style.display = 'none';
+        }
+    });
 }
 
 function toggleLegend() {
     const legend = document.getElementById("map-legend");
     const btn = document.getElementById("btn-toggle-legend");
 
-    // Alterna a classe 'minimized'
     legend.classList.toggle("minimized");
 
-    // Muda o ícone do botão dependendo do estado
     if (legend.classList.contains("minimized")) {
         btn.textContent = "＋";
     } else {

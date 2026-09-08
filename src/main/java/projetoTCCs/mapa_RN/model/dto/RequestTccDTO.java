@@ -10,7 +10,8 @@ public record RequestTccDTO(
 
         String dataDefesa,
 
-        @NotBlank(message = "O nome do discente é obrigatório")        String discente,
+        @NotBlank(message = "O nome do discente é obrigatório")
+        String discente,
 
         @Email(message = "E-mail inválido")
         String email,
@@ -24,7 +25,6 @@ public record RequestTccDTO(
         String examinador1,
         String examinador2,
 
-        @NotBlank(message = "O município é obrigatório")
         String municipio,
 
         @NotBlank(message = "A mesorregião é obrigatório")
@@ -35,5 +35,5 @@ public record RequestTccDTO(
         MultipartFile file
 
 
-        ) {
+) {
 }

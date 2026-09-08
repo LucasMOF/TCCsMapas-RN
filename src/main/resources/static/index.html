@@ -673,18 +673,50 @@
                 <div class="input-group"><input type="text" name="examinador2" placeholder="Examinador 2"></div>
             </div>
 
-            <div class="input-group">
-                <input list="lista-municipios-rn" id="municipio-cadastro" name="municipio"
-                       placeholder="Digite o Município..." autocomplete="off" required>
-                <datalist id="lista-municipios-rn"></datalist>
+            <!-- Município (Busca com seleção por checkbox opcional) -->
+            <div class="input-group" style="position: relative;">
+                <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 5px;">Município (Opcional)</label>
+                <input type="text" id="busca-municipio" placeholder="Digite para buscar o município..." autocomplete="off">
+                <input type="hidden" name="municipio" id="input-municipio-selecionado">
+
+                <!-- Caixa flutuante com as opções de checkbox -->
+                <div id="lista-checkbox-municipios" style="display: none; max-height: 150px; overflow-y: auto; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; margin-top: 5px; padding: 5px; position: absolute; width: 100%; z-index: 10;">
+                    <!-- Preenchido dinamicamente pelo JS -->
+                </div>
             </div>
 
-            <div class="input-row">
-                <div class="input-group"><input type="text" name="mesorregiao" placeholder="Mesorregião"></div>
-                <div class="input-group"><input type="text" name="microrregiao" placeholder="Microrregião"></div>
+            <!-- Mesorregião (Obrigatório - Seleção por rádio) -->
+            <div class="input-group" style="background-color: #0f172a; padding: 12px; border-radius: 6px; border: 1px solid #334155;">
+                <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 8px;">Mesorregião *</label>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.9rem; color: #e2e8f0; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="mesorregiao" value="Oeste Potiguar" required> Oeste Potiguar
+                    </label>
+                    <label style="font-size: 0.9rem; color: #e2e8f0; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="mesorregiao" value="Central Potiguar"> Central Potiguar
+                    </label>
+                    <label style="font-size: 0.9rem; color: #e2e8f0; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="mesorregiao" value="Agreste Potiguar"> Agreste Potiguar
+                    </label>
+                    <label style="font-size: 0.9rem; color: #e2e8f0; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="mesorregiao" value="Leste Potiguar"> Leste Potiguar
+                    </label>
+                </div>
             </div>
 
-            <div class="input-group file-group">
+            <!-- Microrregião (Busca com seleção por checkbox obrigatório) -->
+            <div class="input-group" style="position: relative; margin-top: 15px;">
+                <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 5px;">Microrregião *</label>
+                <input type="text" id="busca-microrregiao" placeholder="Digite para buscar a microrregião..." autocomplete="off" required>
+                <input type="hidden" name="microrregiao" id="input-microrregiao-selecionado" required>
+
+                <!-- Caixa flutuante com as opções de checkbox -->
+                <div id="lista-checkbox-microrregioes" style="display: none; max-height: 150px; overflow-y: auto; background-color: #0f172a; border: 1px solid #334155; border-radius: 6px; margin-top: 5px; padding: 5px; position: absolute; width: 100%; z-index: 10;">
+                    <!-- Preenchido dinamicamente pelo JS -->
+                </div>
+            </div>
+
+            <div class="input-group file-group" style="margin-top: 15px;">
                 <label>Arquivo PDF:</label>
                 <input type="file" name="file" accept="application/pdf">
             </div>

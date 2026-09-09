@@ -2,6 +2,7 @@ package projetoTCCs.mapa_RN.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import projetoTCCs.mapa_RN.model.enums.StatusTcc;
 
 import java.sql.Types;
 import java.time.LocalDate;
@@ -24,13 +25,17 @@ public class Tcc {
     private String mesorregiao;
     private String microrregiao;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusTcc status = StatusTcc.PENDENTE;
+
     @Column(name = "url_pdf")
     private String urlPdf;
 
     public Tcc() {
     }
 
-    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, String urlPdf) {
+    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, StatusTcc status, String urlPdf) {
         this.id = id;
         this.dataDefesa = dataDefesa;
         this.discente = discente;
@@ -42,6 +47,7 @@ public class Tcc {
         this.municipio = municipio;
         this.mesorregiao = mesorregiao;
         this.microrregiao = microrregiao;
+        this.status = status;
         this.urlPdf = urlPdf;
     }
 
@@ -160,5 +166,13 @@ public class Tcc {
 
     public void setMicrorregiao(String microrregiao) {
         this.microrregiao = microrregiao;
+    }
+
+    public StatusTcc getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusTcc status) {
+        this.status = status;
     }
 }

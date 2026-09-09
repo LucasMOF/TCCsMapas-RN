@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Painel Administrativo</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="login-card">
+    <h2>Painel Administrativo</h2>
+
+    <!-- O Spring Security envia o parâmetro ?error se o login falhar -->
+    <div id="erro-msg" class="erro" style="display: none;">Usuário ou senha inválidos.</div>
+
+    <!-- O action aponta para a rota que o Spring Security intercepta para validar -->
+    <form action="/perform_login" method="POST">
+        <div class="input-group">
+            <label>Usuário</label>
+            <input type="text" name="username" required autocomplete="username">
+        </div>
+        <div class="input-group">
+            <label>Senha</label>
+            <input type="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-entrar">Entrar</button>
+    </form>
+</div>
+
+<script>
+    // Script simples para exibir a mensagem de erro se a URL contiver ?error
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        document.getElementById('erro-msg').style.display = 'block';
+    }
+</script>
+</body>
+</html>

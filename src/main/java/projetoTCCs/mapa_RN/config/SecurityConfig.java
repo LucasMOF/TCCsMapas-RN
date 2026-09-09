@@ -19,6 +19,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Libera expressamente arquivos estáticos comuns (css, js, imagens)
+                        .requestMatchers("/css/**", "/js/**", "/*.css", "/*.js", "/login.html").permitAll()
                         // Rotas que exigem autenticação
                         .requestMatchers("/admin/**", "/painel-admin.html").authenticated()
                         // Todo o resto do site (mapa, buscas, cadastro público) fica livre

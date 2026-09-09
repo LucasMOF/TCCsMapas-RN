@@ -88,4 +88,25 @@ public class TccController {
         List<Map<String, Object>> relatorio = service.gerarRelatorioMunicipios();
         return ResponseEntity.ok(relatorio);
     }
+
+    // Endpoint GET consumido pelo painel-admin.js para listar os pendentes
+    @GetMapping("/pendentes")
+    public List<Tcc> listarPendentes() {
+        return service.listarPendentes();
+    }
+
+    // Endpoint PUT para aprovar o trabalho
+    @PutMapping("/{id}/aprovar")
+    public ResponseEntity<Void> aprovar(@PathVariable Long id) {
+        service.aprovarTcc(id);
+        return ResponseEntity.ok().build();
+    }
+
+    // Endpoint PUT para rejeitar (e consequentemente excluir) o trabalho
+    @PutMapping("/{id}/rejeitar")
+    public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
+        service.rejeitarTcc(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

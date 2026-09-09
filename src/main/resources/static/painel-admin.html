@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Curadoria - Mapa RN</title>
+    <link rel="stylesheet" href="painel-admin.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="brand">
+        <h1>Painel de Curadoria</h1>
+        <span class="badge">Admin</span>
+    </div>
+    <form action="/logout" method="POST" class="logout-form">
+        <button type="submit" class="btn-sair">Sair do Painel</button>
+    </form>
+</header>
+
+<main class="container">
+    <header class="section-header">
+        <h2>Trabalhos Pendentes</h2>
+        <p>Revise todos os detalhes dos novos TCCs antes de publicá-los no mapa público.</p>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Título</th>
+                <th>Discente</th>
+                <th>Município / Região</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabela-pendentes">
+            <!-- As linhas serão injetadas via JavaScript -->
+            </tbody>
+        </table>
+        <div id="msg-vazio" class="msg-vazio" style="display: none;">
+            Nenhum trabalho aguardando aprovação no momento.
+        </div>
+    </div>
+</main>
+
+<!-- Estrutura do Modal de Detalhes -->
+<div id="modal-detalhes" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Detalhes do TCC</h3>
+            <button class="btn-fechar" onclick="fecharModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="conteudo-modal">
+            <!-- Os detalhes completos entrarão aqui via JS -->
+        </div>
+        <div class="modal-footer" id="rodape-modal">
+            <!-- Botões de aprovar e rejeitar entrarão aqui -->
+        </div>
+    </div>
+</div>
+
+<script src="painel-admin.js"></script>
+</body>
+</html>

@@ -220,11 +220,64 @@ function clean() {
 
 // Ciclo de Vida da Aplicação e Listeners Globais
 
-let listaCidadesGlobal = [];
+// Lista estática oficial de municípios do Rio Grande do Norte (convertida para maiúsculo)
+let listaCidadesGlobal = [
+    "ACARI", "ASSÚ", "AFONSO BEZERRA", "ÁGUA NOVA", "ALEXANDRIA", "ALMINO AFONSO",
+    "ALTO DO RODRIGUES", "ANGICOS", "ANTÔNIO MARTINS", "APODI", "AREIA BRANCA", "ARÊS",
+    "AUGUSTO SEVERO", "BAÍA FORMOSA", "BARAÚNA", "BARCELONA", "BENTO FERNANDES", "BOA SAÚDE",
+    "BODÓ", "BOM JESUS", "BREJINHO", "CAIÇARA DO NORTE", "CAIÇARA DO RIO DO VENTO", "CAICÓ",
+    "CAMPO GRANDE", "CAMPO REDONDO", "CANGUARETAMA", "CARAÚBAS", "CARNAÚBA DOS DANTAS",
+    "CARNAUBAIS", "CEARÁ-MIRIM", "CERRO CORÁ", "CORONEL EZEQUIEL", "CORONEL JOÃO PESSOA",
+    "CRUZETA", "CURRAIS NOVOS", "DOUTOR SEVERIANO", "ENCANTO", "EQUADOR", "ESPÍRITO SANTO",
+    "EXTREMOZ", "FELIPE GUERRA", "FERNANDO PEDROZA", "FLORÂNIA", "FRANCISCO DANTAS",
+    "FRUTUOSO GOMES", "GALINHOS", "GAMELEIRA", "GOIANINHA", "GOVERNADOR DIX-SEPT ROSADO",
+    "GROSSOS", "GUAMARÉ", "IELMO MARINHO", "IPANGUAÇU", "IPUEIRA", "ITAJÁ", "ITAÚ",
+    "JAÇANÃ", "JANDAÍRA", "JANDUÍS", "JAPI", "JARDIM DE ANGICOS", "JARDIM DE PIRANHAS",
+    "JARDIM DO SERIDÓ", "JOÃO CÂMARA", "JOÃO DIAS", "JOSÉ DA PENHA", "JUCURUTU", "JUNDIÁ",
+    "LAGOA D'ANTA", "LAGOA DE PEDRAS", "LAGOA DE VELHOS", "LAGOA NOVA", "LAGOA SALGADA",
+    "LAJES", "LAJES PINTADAS", "LUCRÉCIA", "LUÍS GOMES", "MACAÍBA", "MACAU", "MAJOR SALES",
+    "MARCELINO VIEIRA", "MARTINS", "MAXARANGUAPE", "MESSIAS TARGINO", "MONTANHAS", "MONTE ALEGRE",
+    "MONTE DAS GAMELEIRAS", "MOSSORÓ", "NATAL", "NÍSIA FLORESTA", "NOVA CRUZ", "OLHO D'ÁGUA DOS BORGES",
+    "OURO BRANCO", "PARANÁ", "PARAÚ", "PARAZINHO", "PARELHAS", "PARNAMIRIM", "PASS A E FICA",
+    "PASSAGEM", "PATI", "PAU DOS FERROS", "PEDRA GRANDE", "PEDRA PRETA", "PEDRO AVELINO",
+    "PEDRO VELHO", "PENDÊNCIAS", "PILÕES", "POÇO BRANCO", "PORTALEGRE", "PORTO DO MANGUE",
+    "PUREZA", "RAFAEL FERNANDES", "RAFAEL GODEIRO", "RIACHO DA CRUZ", "RIACHO DE SANTANA",
+    "RIACHUELO", "RIO DO FOGO", "RODOLFO FERNANDES", "RUY BARBOSA", "SANTA CRUZ", "SANTA MARIA",
+    "SANTANA DO MATOS", "SANTANA DO SERIDÓ", "SANTO ANTÔNIO", "SÃO BENTO DO NORTE",
+    "SÃO BENTO DO TRAIRI", "SÃO FERNANDO", "SÃO FRANCISCO DO OESTE", "SÃO GONÇALO DO AMARANTE",
+    "SÃO JOÃO DO SABUGI", "SÃO JOSÉ DE MIPIBU", "SÃO JOSÉ DO CAMPESTRE", "SÃO JOSÉ DO SERIDÓ",
+    "SÃO MIGUEL", "SÃO MIGUEL DO GOSTOSO", "SÃO PAULO DO POTENGI", "SÃO PEDRO", "SÃO RAFAEL",
+    "SÃO TOMÉ", "SÃO VICENTE", "SENADOR ELÓI DE SOUZA", "SENADOR GEORGINO AVELINO", "SERRA CAIADA",
+    "SERRA DE SÃO BENTO", "SERRA DO MEL", "SERRA NEGRA DO NORTE", "SERRINHA", "SERRINHA DOS PINTOS",
+    "SEVERIANO MELO", "SÍTIO NOVO", "TABOLEIRO GRANDE", "TAIPU", "TANGARÁ", "TENENTE ANANIAS",
+    "TENENTE LAURENTINO CRUZ", "TIBAU", "TIBAU DO SUL", "TIMBAÚBA DOS BATISTAS", "TOUROS",
+    "TRIUNFO POTIGUAR", "UMARIZAL", "UPANEMA", "VÁRZEA", "VENHA-VER", "VERA CRUZ", "VIÇOSA", "VILA FLOR"
+];
+
+// Lista estática e oficial das microrregiões do Rio Grande do Norte fornecida
+let listaMicrorregioesGlobal = [
+    "AGRESTE POTIGUAR",
+    "ANGICOS",
+    "BAIXA VERDE",
+    "BORBOREMA POTIGUAR",
+    "CHAPADA DO APODI",
+    "LITORAL NORDESTE",
+    "LITORAL SUL",
+    "MACAÍBA",
+    "MACAU",
+    "MÉDIO OESTE",
+    "MOSSORÓ",
+    "NATAL",
+    "PAU DOS FERROS",
+    "SERIDÓ OCIDENTAL",
+    "SERIDÓ ORIENTAL",
+    "SERRA DE SANTANA",
+    "SERRA DE SÃO MIGUEL",
+    "UMARIZAL",
+    "VALE DO AÇU"
+];
 
 document.addEventListener("DOMContentLoaded", () => {
-    carregarMunicipiosIBGE();
-
     // Configuração dos inputs de busca interativos com checkboxes
     configurarBuscaCheckbox('busca-municipio', 'lista-checkbox-municipios', 'input-municipio-selecionado');
     configurarBuscaCheckbox('busca-microrregiao', 'lista-checkbox-microrregioes', 'input-microrregiao-selecionado');
@@ -294,26 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function carregarMunicipiosIBGE() {
-    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/RN/municipios')
-        .then(response => response.json())
-        .then(cidades => {
-            listaCidadesGlobal = cidades.map(c => c.nome.toUpperCase());
-
-            const datalist = document.getElementById('lista-municipios-rn');
-            if (datalist) {
-                cidades
-                    .sort((a, b) => a.nome.localeCompare(b.nome))
-                    .forEach(cidade => {
-                        const option = document.createElement('option');
-                        option.value = cidade.nome.toUpperCase();
-                        datalist.appendChild(option);
-                    });
-            }
-        })
-        .catch(erro => console.error("Erro ao carregar municípios do IBGE:", erro));
-}
-
 // Função que cria o comportamento dinâmico de digitar e selecionar via checkbox
 function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) {
     const inputTexto = document.getElementById(idInputTexto);
@@ -321,6 +354,10 @@ function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) 
     const inputHidden = document.getElementById(idInputHidden);
 
     if (!inputTexto || !containerLista || !inputHidden) return;
+
+    // Define qual lista utilizar com base no ID do input (município ou microrregião)
+    const ehMicrorregiao = idInputTexto.includes('microrregiao');
+    const fonteDados = ehMicrorregiao ? listaMicrorregioesGlobal : listaCidadesGlobal;
 
     inputTexto.addEventListener('input', () => {
         const termo = inputTexto.value.trim().toUpperCase();
@@ -332,7 +369,7 @@ function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) 
             return;
         }
 
-        const filtrados = listaCidadesGlobal.filter(item => item.includes(termo));
+        const filtrados = fonteDados.filter(item => item.includes(termo));
 
         if (filtrados.length === 0) {
             containerLista.style.display = 'none';

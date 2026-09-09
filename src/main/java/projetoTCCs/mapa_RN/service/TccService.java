@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import projetoTCCs.mapa_RN.model.Tcc;
 import projetoTCCs.mapa_RN.model.dto.ProfessorStatsDTO;
 import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
+import projetoTCCs.mapa_RN.model.enums.StatusTcc;
 import projetoTCCs.mapa_RN.repository.TccRepository;
 
 import java.util.*;
@@ -104,6 +105,28 @@ public class TccService {
 
     public List<Map<String, Object>> gerarRelatorioMunicipios() {
         return repository.contarTccsPorMunicipio();
+    }
+
+    // Retorna apenas os TCCs que estão aguardando curadoria
+    public List<Tcc> listarPendentes() {
+        return repository.buscarPendentes();
+    }
+
+    // Aprova o TCC (muda o status para APROVADO para aparecer no mapa público)
+    public void aprovarTcc(Long id) {
+        Tcc tcc = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("TCC não encontrado com o ID: " + id));
+
+        tcc.setStatus(StatusTcc.APROVADO);
+        repository.save(tcc);
+    }
+
+    // Rejeita o TCC e o exclui permanentemente do banco de dados
+    public void rejeitarTcc(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("TCC não encontrado com o ID: " + id);
+        }
+        repository.deleteById(id);
     }
 
     // ====================================================================

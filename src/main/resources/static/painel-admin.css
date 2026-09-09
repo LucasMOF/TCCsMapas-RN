@@ -1,0 +1,253 @@
+/* --- Reset e Layout Base --- */
+body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #f8fafc;
+}
+
+.badge {
+    background-color: #3b82f6;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.btn-sair {
+    background-color: transparent;
+    color: #94a3b8;
+    border: 1px solid #475569;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-sair:hover {
+    background-color: #334155;
+    color: #f8fafc;
+}
+
+/* Container Principal */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-header h2 {
+    margin: 0 0 5px 0;
+    color: #f8fafc;
+}
+
+.section-header p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* Tabela */
+.table-container {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background-color: #0f172a;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    padding: 15px;
+    border-bottom: 1px solid #334155;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #334155;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Botões de Ação */
+.btn-aprovar, .btn-rejeitar {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #fff;
+    transition: opacity 0.2s;
+}
+
+.btn-aprovar { background-color: #16a34a; }
+.btn-rejeitar { background-color: #dc2626; }
+
+.btn-aprovar:hover, .btn-rejeitar:hover {
+    opacity: 0.8;
+}
+
+.btn-detalhes {
+    background-color: #475569;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.btn-detalhes:hover {
+    background-color: #64748b;
+}
+
+.msg-vazio {
+    padding: 30px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+/* --- Modal de Detalhes --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #f8fafc;
+}
+
+.btn-fechar {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.btn-fechar:hover {
+    color: #f87171;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.detalhe-grupo {
+    margin-bottom: 15px;
+}
+
+.detalhe-grupo label {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.detalhe-grupo p {
+    margin: 0;
+    background-color: #0f172a;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #334155;
+}
+
+.btn-pdf {
+    display: inline-block;
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-pdf:hover {
+    background-color: #2563eb;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #334155;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}

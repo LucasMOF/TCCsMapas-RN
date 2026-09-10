@@ -85,7 +85,7 @@ function abrirModal(id) {
             <p>${tcc.municipio} - ${tcc.microrregiao} (${tcc.mesorregiao})</p>
         </div>
         
-        <!-- Link clicável para abrir o PDF em nova aba (corrigido para urlPdf) -->
+        <!-- Link clicável para abrir o PDF em nova aba -->
         ${tcc.urlPdf ? `<a href="${tcc.urlPdf}" target="_blank" class="btn-pdf">📄 Abrir Arquivo PDF</a>` : '<p style="color: #f87171;">⚠️ Nenhum arquivo em anexo.</p>'}
     `;
 

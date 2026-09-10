@@ -10,7 +10,6 @@ import java.util.Map;
 
 public interface TccRepository extends JpaRepository<Tcc, Long> {
 
-    // Filtros embutidos via @Query para não quebrar o Service atual.
     // Só retorna se o status for APROVADO.
     @Query("SELECT t FROM Tcc t WHERE LOWER(t.municipio) LIKE LOWER(CONCAT('%', :municipio, '%')) AND t.status = 'APROVADO'")
     List<Tcc> findByMunicipioContainingIgnoreCase(@Param("municipio") String municipio);
@@ -24,7 +23,7 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
     @Query("SELECT t.orientador, COUNT(t) FROM Tcc t WHERE t.status = 'APROVADO' GROUP BY t.orientador")
     List<Object[]> countByOrientador();
 
-    // Busca Avançada Dinâmica ATUALIZADA - Status travado como APROVADO logo no início do WHERE
+    // Busca Avançada Dinâmica - Status travado como APROVADO logo no início do WHERE
     @Query(value = "SELECT * FROM tcc t WHERE t.status = 'APROVADO' AND " +
             "(:titulo IS NULL OR LOWER(CAST(t.titulo AS TEXT)) LIKE LOWER(CONCAT('%', :titulo, '%'))) AND " +
             "(:discente IS NULL OR LOWER(CAST(t.discente AS TEXT)) LIKE LOWER(CONCAT('%', :discente, '%'))) AND " +
@@ -52,9 +51,7 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
     @Query("SELECT t.municipio AS municipio, COUNT(t) AS total FROM Tcc t WHERE t.status = 'APROVADO' GROUP BY t.municipio")
     List<Map<String, Object>> contarTccsPorMunicipio();
 
-    // --- MÉTODOS PARA A ADMINISTRAÇÃO ---
-
-    // Este método usado exclusivamente pelo painel para listar o que precisa ser curado
+    // Método para o painel adm, para listar o que precisa ser curado
     @Query("SELECT t FROM Tcc t WHERE t.status = 'PENDENTE' ORDER BY t.id ASC")
     List<Tcc> buscarPendentes();
 }

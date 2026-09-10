@@ -23,13 +23,13 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/*.css", "/*.js", "/login.html").permitAll()
                         // Rotas que exigem autenticação
                         .requestMatchers("/admin/**", "/painel-admin.html").authenticated()
-                        // Todo o resto do site (mapa, buscas, cadastro público) fica livre
+                        // Todo as rotas restantes ficam livre
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login.html") // Página de login personalizada que vamos criar
+                        .loginPage("/login.html")
                         .loginProcessingUrl("/perform_login") // URL que o Spring intercepta para validar
-                        .defaultSuccessUrl("/painel-admin.html", true) // Para onde vai após logar com sucesso
+                        .defaultSuccessUrl("/painel-admin.html", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -43,7 +43,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Pega das variáveis de ambiente do sistema ou usa padrão local para testes
+        // Pega das variáveis de ambiente do sistema
         String user = System.getenv("ADMIN_USER") != null ? System.getenv("ADMIN_USER") : "admin";
         String pass = System.getenv("ADMIN_PASS") != null ? System.getenv("ADMIN_PASS") : "senha123";
 

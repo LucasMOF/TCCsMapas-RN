@@ -7,6 +7,12 @@ body {
     padding: 0;
 }
 
+/* Utilitários */
+.hidden { display: none !important; }
+.text-muted { color: #94a3b8; }
+.text-danger { color: #f87171; }
+.mb-10 { margin-bottom: 10px; }
+
 /* Navbar */
 .navbar {
     background-color: #1e293b;
@@ -70,7 +76,6 @@ body {
 }
 
 .section-header p {
-    color: #94a3b8;
     font-size: 0.9rem;
     margin-bottom: 25px;
 }
@@ -112,7 +117,7 @@ tr:last-child td {
 /* Botões de Ação */
 .btn-aprovar, .btn-rejeitar {
     border: none;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
@@ -146,10 +151,9 @@ tr:last-child td {
 .msg-vazio {
     padding: 30px;
     text-align: center;
-    color: #94a3b8;
 }
 
-/* --- Modal de Detalhes --- */
+/* --- Modais (Geral) --- */
 .modal {
     position: fixed;
     top: 0;
@@ -163,6 +167,10 @@ tr:last-child td {
     z-index: 1000;
 }
 
+.modal-elevado {
+    z-index: 1050; /* Fica por cima do modal de detalhes */
+}
+
 .modal-content {
     background-color: #1e293b;
     border: 1px solid #334155;
@@ -173,6 +181,10 @@ tr:last-child td {
     display: flex;
     flex-direction: column;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modal-sm {
+    max-width: 500px;
 }
 
 .modal-header {
@@ -207,6 +219,15 @@ tr:last-child td {
     line-height: 1.6;
 }
 
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #334155;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+/* Grupos do Modal de Detalhes */
 .detalhe-grupo {
     margin-bottom: 15px;
 }
@@ -244,10 +265,36 @@ tr:last-child td {
     background-color: #2563eb;
 }
 
-.modal-footer {
-    padding: 20px;
-    border-top: 1px solid #334155;
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
+/* Elementos do Modal de Rejeição */
+.textarea-motivo {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #0f172a;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    resize: vertical;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.textarea-motivo:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.btn-cancelar {
+    background: none;
+    border: 1px solid #475569;
+    color: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+    background-color: #334155;
 }

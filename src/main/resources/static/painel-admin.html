@@ -20,7 +20,7 @@
 <main class="container">
     <header class="section-header">
         <h2>Trabalhos Pendentes</h2>
-        <p>Revise todos os detalhes dos novos TCCs antes de publicá-los no mapa público.</p>
+        <p class="text-muted">Revise todos os detalhes dos novos TCCs antes de publicá-los no mapa público.</p>
     </header>
 
     <div class="table-container">
@@ -34,27 +34,95 @@
             </tr>
             </thead>
             <tbody id="tabela-pendentes">
-            <!-- As linhas serão injetadas via JavaScript -->
+            <!-- As linhas serão injetadas via JavaScript usando o template abaixo -->
             </tbody>
         </table>
-        <div id="msg-vazio" class="msg-vazio" style="display: none;">
+        <div id="msg-vazio" class="msg-vazio hidden">
             Nenhum trabalho aguardando aprovação no momento.
         </div>
     </div>
 </main>
 
-<!-- Estrutura do Modal de Detalhes -->
-<div id="modal-detalhes" class="modal" style="display: none;">
+<!-- Template HTML para as linhas da Tabela (Fica invisível na tela) -->
+<template id="template-linha-tcc">
+    <tr>
+        <td>
+            <strong class="col-titulo"></strong><br>
+            <small class="text-muted col-orientador"></small>
+        </td>
+        <td class="col-discente"></td>
+        <td>
+            <span class="col-municipio"></span><br>
+            <small class="text-muted col-mesorregiao"></small>
+        </td>
+        <td>
+            <button class="btn-detalhes">Ver Detalhes</button>
+        </td>
+    </tr>
+</template>
+
+<!-- Modal de Detalhes -->
+<div id="modal-detalhes" class="modal hidden">
     <div class="modal-content">
         <div class="modal-header">
             <h3>Detalhes do TCC</h3>
-            <button class="btn-fechar" onclick="fecharModal()">&times;</button>
+            <button id="btn-fechar-detalhes" class="btn-fechar">&times;</button>
         </div>
-        <div class="modal-body" id="conteudo-modal">
-            <!-- Os detalhes completos entrarão aqui via JS -->
+        <div class="modal-body">
+            <div class="detalhe-grupo">
+                <label>Título</label>
+                <p id="det-titulo"></p>
+            </div>
+            <div class="detalhe-grupo">
+                <label>Autoria e Orientação</label>
+                <p>
+                    <strong>Discente:</strong> <span id="det-discente"></span> <br>
+                    <strong>Orientador:</strong> <span id="det-orientador"></span>
+                </p>
+            </div>
+            <div class="detalhe-grupo">
+                <label>Banca Examinadora</label>
+                <p id="det-banca"></p>
+            </div>
+            <div class="detalhe-grupo">
+                <label>Data / E-Mail Discente</label>
+                <p id="det-data-email"></p>
+            </div>
+            <div class="detalhe-grupo">
+                <label>Localidade: Município - Microrregião (Mesorregião)</label>
+                <p id="det-localidade"></p>
+            </div>
+            <div class="detalhe-grupo">
+                <label>E-Mail Notificação</label>
+                <p id="det-email-contato"></p>
+            </div>
+
+            <a id="det-pdf-link" target="_blank" class="btn-pdf hidden">📄 Abrir Arquivo PDF</a>
+            <p id="det-pdf-aviso" class="text-danger hidden">⚠️ Nenhum arquivo em anexo.</p>
         </div>
-        <div class="modal-footer" id="rodape-modal">
-            <!-- Botões de aprovar e rejeitar entrarão aqui -->
+        <div class="modal-footer">
+            <button id="btn-rejeitar-tcc" class="btn-rejeitar">Rejeitar Cadastro</button>
+            <button id="btn-aprovar-tcc" class="btn-aprovar">Aprovar e Publicar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Específico para Rejeição -->
+<div id="modal-rejeicao" class="modal hidden modal-elevado">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 class="text-danger">Confirmar Rejeição</h3>
+            <button id="btn-fechar-rejeicao-x" class="btn-fechar">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="text-muted mb-10">
+                Informe o motivo detalhado. Este texto será enviado diretamente ao e-mail do responsável pela inscrição do TCC.
+            </p>
+            <textarea id="texto-motivo-rejeicao" class="textarea-motivo" rows="6" placeholder="Digite a justificativa aqui..."></textarea>
+        </div>
+        <div class="modal-footer footer-rejeicao">
+            <button id="btn-cancelar-rejeicao" class="btn-cancelar">Cancelar</button>
+            <button id="btn-confirmar-rejeicao" class="btn-rejeitar">Confirmar e Enviar E-mail</button>
         </div>
     </div>
 </div>

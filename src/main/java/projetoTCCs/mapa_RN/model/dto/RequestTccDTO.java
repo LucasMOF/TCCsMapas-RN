@@ -32,6 +32,9 @@ public record RequestTccDTO(
         @NotBlank(message = "A microrregião é obrigatório")
         String microrregiao,
 
+        @Email(message = "E-mail inválido")
+        String emailContato,
+
         MultipartFile file
 
 

@@ -19,6 +19,9 @@ public class TccService {
     @Autowired
     private SupabaseStorageService supabaseStorageService;
 
+    @Autowired
+    private EmailService emailService;
+
     public List<Tcc> buscarPorMunicipio(String municipio) {
         return repository.findByMunicipioContainingIgnoreCase(municipio);
     }
@@ -119,14 +122,22 @@ public class TccService {
 
         tcc.setStatus(StatusTcc.APROVADO);
         repository.save(tcc);
+
+        // Dispara a notificação por e-mail utilizando o novo campo de contato
+        emailService.enviarEmailStatus(tcc.getEmailContato(), tcc.getTitulo(), "APROVADO", null);
     }
 
     // Rejeita o TCC e o exclui permanentemente do banco de dados
-    public void rejeitarTcc(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("TCC não encontrado com o ID: " + id);
-        }
-        repository.deleteById(id);
+    public void rejeitarTcc(Long id, String motivo) {
+        Tcc tcc = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("TCC não encontrado com o ID: " + id));
+
+        String emailDestinatario = tcc.getEmailContato();
+        String tituloTcc = tcc.getTitulo();
+
+        emailService.enviarEmailStatus(emailDestinatario, tituloTcc, "REJEITADO", motivo);
+
+        repository.delete(tcc);
     }
 
     // ====================================================================
@@ -145,6 +156,7 @@ public class TccService {
         tcc.setExaminador2(dto.examinador2() != null ? dto.examinador2().toUpperCase().trim() : null);
         tcc.setEmail(dto.email());
         tcc.setDataDefesa(dto.dataDefesa());
+        tcc.setEmailContato(dto.emailContato());
         return tcc;
     }
 

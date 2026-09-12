@@ -12,19 +12,13 @@
 
 <section>
     <div class="controles-topo">
-        <button onclick="toggleSearch()" class="btn btn-secundario">
-            🔍 Busca Avançada
-        </button>
+        <button onclick="toggleSearch()" class="btn btn-secundario">Busca Avançada</button>
         <a href="stats.html" class="nav-button">
-            <button class="btn btn-primario">
-                📊 Ver Estatísticas
-            </button>
+            <button class="btn btn-primario">Ver Estatísticas</button>
         </a>
         <a href="relatorio.html" class="btn btn-secundario"
-           style="text-decoration: none; justify-content: center;">
-            📄 Ver Relatório
-        </a>
-        <button onclick="toggleCadastro()" class="btn btn-primario">➕ Cadastrar TCC</button>
+           style="text-decoration: none; justify-content: center;">Ver Relatório</a>
+        <button onclick="toggleCadastro()" class="btn btn-primario">Cadastrar TCC</button>
     </div>
     <?xml version="1.0" encoding="utf-8"?>
     <div id="popup"></div>
@@ -665,7 +659,7 @@
 
             <div class="input-row">
                 <div class="input-group"><input type="datetime-local" name="dataDefesa"></div>
-                <div class="input-group"><input type="email" name="email" placeholder="E-mail"></div>
+                <div class="input-group"><input type="email" name="email" placeholder="E-mail Discente"></div>
             </div>
 
             <div class="input-row">
@@ -719,6 +713,10 @@
             <div class="input-group file-group" style="margin-top: 15px;">
                 <label>Arquivo PDF:</label>
                 <input type="file" name="file" accept="application/pdf">
+            </div>
+
+            <div class="input-group" style="margin-top: 15px;">
+                <input type="email" name="emailContato" placeholder="E-mail para Contato / Notificações" required>
             </div>
 
             <button type="submit" class="btn-enviar">Cadastrar TCC</button>

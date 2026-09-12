@@ -25,6 +25,9 @@ public class Tcc {
     private String mesorregiao;
     private String microrregiao;
 
+    @Column(name = "email_contato")
+    private String emailContato;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusTcc status = StatusTcc.PENDENTE;
@@ -35,7 +38,7 @@ public class Tcc {
     public Tcc() {
     }
 
-    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, StatusTcc status, String urlPdf) {
+    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, String emailContato ,StatusTcc status, String urlPdf) {
         this.id = id;
         this.dataDefesa = dataDefesa;
         this.discente = discente;
@@ -47,6 +50,7 @@ public class Tcc {
         this.municipio = municipio;
         this.mesorregiao = mesorregiao;
         this.microrregiao = microrregiao;
+        this.emailContato = emailContato;
         this.status = status;
         this.urlPdf = urlPdf;
     }
@@ -174,5 +178,13 @@ public class Tcc {
 
     public void setStatus(StatusTcc status) {
         this.status = status;
+    }
+
+    public String getEmailContato() {
+        return emailContato;
+    }
+
+    public void setEmailContato(String emailContato) {
+        this.emailContato = emailContato;
     }
 }

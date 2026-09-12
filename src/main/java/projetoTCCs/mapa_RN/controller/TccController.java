@@ -104,8 +104,9 @@ public class TccController {
 
     // Endpoint PUT para rejeitar (e consequentemente excluir) o TCC
     @PutMapping("/{id}/rejeitar")
-    public ResponseEntity<Void> rejeitar(@PathVariable Long id) {
-        service.rejeitarTcc(id);
+    public ResponseEntity<Void> rejeitar(@PathVariable Long id,
+                                         @RequestParam(required = false) String motivo) {
+        service.rejeitarTcc(id, motivo);
         return ResponseEntity.ok().build();
     }
 

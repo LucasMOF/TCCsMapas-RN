@@ -220,7 +220,6 @@ function clean() {
 
 // Ciclo de Vida da Aplicação e Listeners Globais
 
-// Lista estática oficial de municípios do Rio Grande do Norte (convertida para maiúsculo)
 let listaCidadesGlobal = [
     "ACARI", "ASSÚ", "AFONSO BEZERRA", "ÁGUA NOVA", "ALEXANDRIA", "ALMINO AFONSO",
     "ALTO DO RODRIGUES", "ANGICOS", "ANTÔNIO MARTINS", "APODI", "AREIA BRANCA", "ARÊS",
@@ -254,44 +253,27 @@ let listaCidadesGlobal = [
     "TRIUNFO POTIGUAR", "UMARIZAL", "UPANEMA", "VÁRZEA", "VENHA-VER", "VERA CRUZ", "VIÇOSA", "VILA FLOR"
 ];
 
-// Lista estática e oficial das microrregiões do Rio Grande do Norte fornecida
 let listaMicrorregioesGlobal = [
-    "AGRESTE POTIGUAR",
-    "ANGICOS",
-    "BAIXA VERDE",
-    "BORBOREMA POTIGUAR",
-    "CHAPADA DO APODI",
-    "LITORAL NORDESTE",
-    "LITORAL SUL",
-    "MACAÍBA",
-    "MACAU",
-    "MÉDIO OESTE",
-    "MOSSORÓ",
-    "NATAL",
-    "PAU DOS FERROS",
-    "SERIDÓ OCIDENTAL",
-    "SERIDÓ ORIENTAL",
-    "SERRA DE SANTANA",
-    "SERRA DE SÃO MIGUEL",
-    "UMARIZAL",
-    "VALE DO AÇU"
+    "AGRESTE POTIGUAR", "ANGICOS", "BAIXA VERDE", "BORBOREMA POTIGUAR",
+    "CHAPADA DO APODI", "LITORAL NORDESTE", "LITORAL SUL", "MACAÍBA",
+    "MACAU", "MÉDIO OESTE", "MOSSORÓ", "NATAL", "PAU DOS FERROS",
+    "SERIDÓ OCIDENTAL", "SERIDÓ ORIENTAL", "SERRA DE SANTANA",
+    "SERRA DE SÃO MIGUEL", "UMARIZAL", "VALE DO AÇU"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Configuração dos inputs de busca interativos com checkboxes
     configurarBuscaCheckbox('busca-municipio', 'lista-checkbox-municipios', 'input-municipio-selecionado');
     configurarBuscaCheckbox('busca-microrregiao', 'lista-checkbox-microrregioes', 'input-microrregiao-selecionado');
 
-    // Manipulação do Envio do Formulário de Cadastro com Validação Rigorosa
     const form = document.getElementById('formCadastroTcc');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Validações obrigatórias no Front-end antes do envio
             const titulo = form.querySelector('input[name="titulo"]').value.trim();
             const mesorregiaoEl = form.querySelector('input[name="mesorregiao"]:checked');
             const microrregiao = document.getElementById('input-microrregiao-selecionado').value.trim();
+            const emailContato = form.querySelector('input[name="emailContato"]').value.trim();
 
             if (!titulo || titulo.length < 5) {
                 alert("O título do TCC é obrigatório e deve ter pelo menos 5 caracteres.");
@@ -305,6 +287,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!microrregiao) {
                 alert("A Microrregião é obrigatória. Selecione uma opção na lista.");
+                return;
+            }
+
+            if (!emailContato) {
+                alert("O e-mail para contato/notificações é obrigatório.");
                 return;
             }
 
@@ -323,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (response.ok) {
-                    alert("Cadastro realizado com sucesso! Seu TCC passará por uma curadoria da nossa equipe e você será notificado via e-mail (caso tenha informado).");
+                    alert("Cadastrado realizado com sucesso! Você receberá atualizações sobre o status, da curadoria no e-mail informado para noficações. Por favor, lembre-se de verificar também a sua caixa de SPAM ou Lixo Eletrônico.");
                     e.target.reset();
                     document.getElementById('input-municipio-selecionado').value = "";
                     document.getElementById('input-microrregiao-selecionado').value = "";
@@ -347,7 +334,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Função que cria o comportamento dinâmico de digitar e selecionar via checkbox
 function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) {
     const inputTexto = document.getElementById(idInputTexto);
     const containerLista = document.getElementById(idContainerLista);
@@ -355,7 +341,6 @@ function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) 
 
     if (!inputTexto || !containerLista || !inputHidden) return;
 
-    // Define qual lista utilizar com base no ID do input (município ou microrregião)
     const ehMicrorregiao = idInputTexto.includes('microrregiao');
     const fonteDados = ehMicrorregiao ? listaMicrorregioesGlobal : listaCidadesGlobal;
 

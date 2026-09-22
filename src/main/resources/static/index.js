@@ -1,10 +1,36 @@
 // Inicialização e Eventos do Mapa
+let isToggleMicro = false;
 
+function leaveMicro(){
+    if(isToggleMicro){
+        isToggleMicro = false;
+        const elements = document.getElementsByTagName("path");
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].style.filter = "opacity(1)";
+            elements[i].style.transition = "brightness(1)";
+        }
+        hideName();
+    }
+}
 function onload() {
     const paths = document.getElementsByTagName("path");
+    const legends = document.getElementsByClassName("legend-item");
+    for (let i = 0; i < legends.length; i++) {
+        legends[i].addEventListener("mouseover", (element) => toggleMicro(element.target.id), false);
+        legends[i].addEventListener("mouseout", () => leaveMicro(), false)
+    }
     for (let i = 0; i < paths.length; i++) {
         paths[i].addEventListener("click", (element) => load(element.target.id), false);
     }
+    const toggle = document.getElementsByTagName("svg")
+    console.log(toggle)
+    toggle[0].addEventListener("click", (element) => {
+        const elements = document.getElementsByTagName("path");
+        console.log("a")
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].style.filter = "opacity(1)";
+            elements[i].style.transition = "brightness(1)";
+        }})
 }
 
 // Regras de Negócio e Mecanismos de Busca
@@ -60,6 +86,7 @@ async function executarBuscaAvancada() {
 }
 
 async function load(id) {
+    console.log(id)
     const url = `http://localhost:8080/api/tccs/busca?municipio=${encodeURIComponent(id)}`;
     try {
         const response = await fetch(url);
@@ -140,6 +167,37 @@ function createObject(info, id) {
 
     hiddenDiv.appendChild(btn);
     div.appendChild(hiddenDiv);
+}
+
+function toggleMicro(id){
+    isToggleMicro = true;
+    id = "micro-" +id.toLowerCase().normalize('NFD').replace(/\p{Mn}/gu, "");
+    const elements = document.getElementsByClassName(id)
+    const nonElements = document.getElementsByTagName("path")
+    for (let i = 0; i < nonElements.length; i++) {
+        nonElements[i].style.filter = "opacity(0.5)";
+    }
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.filter = "brightness(1.35)    ";
+    }
+    showMicroName(elements[0]);
+}
+
+function showMicroName(param) {
+    const element = (typeof param === 'string') ? document.getElementsByClassName(param) : param;
+    if (!element) return;
+    console.log(param)
+
+    const nomeMicro = param.getAttribute('data-micro') || '';
+
+    const position = element.getBoundingClientRect();
+    const popup = document.getElementById("popup");
+
+    popup.style.top = (position.top < 70) ? (position.top + 70 + "px") : (position.top - 70 + "px");
+    popup.style.left = (position.left - 10) + "px";
+
+    popup.textContent = nomeMicro;
+    popup.style.display = "block";
 }
 
 function showName(param) {

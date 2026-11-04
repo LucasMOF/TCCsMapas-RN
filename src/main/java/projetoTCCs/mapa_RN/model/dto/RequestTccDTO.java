@@ -27,10 +27,10 @@ public record RequestTccDTO(
 
         String municipio,
 
-        @NotBlank(message = "A mesorregião é obrigatório")
-        String mesorregiao,
-        @NotBlank(message = "A microrregião é obrigatório")
-        String microrregiao,
+        @NotBlank(message = "A região intermediaria é obrigatório")
+        String regiaoIntermediaria,
+        @NotBlank(message = "A região imediata é obrigatório")
+        String regiaoImediata,
 
         @Email(message = "E-mail inválido")
         String emailContato,

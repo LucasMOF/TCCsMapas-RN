@@ -4,15 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import projetoTCCs.mapa_RN.model.Tcc;
 import projetoTCCs.mapa_RN.model.dto.RequestTccDTO;
-import projetoTCCs.mapa_RN.service.SupabaseStorageService;
 import projetoTCCs.mapa_RN.service.TccService;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.util.JSONPObject;
 
 import java.util.List;
 import java.util.Map;
@@ -36,12 +31,12 @@ public class TccController {
             @RequestParam(required = false) String discente,
             @RequestParam(required = false) String orientador,
             @RequestParam(required = false) String municipio,
-            @RequestParam(required = false) String mesorregiao,
-            @RequestParam(required = false) String microrregiao,
+            @RequestParam(required = false) String regiaoIntermediaria,
+            @RequestParam(required = false) String regiaoImediata,
             @RequestParam(required = false) String examinador
     ) {
 
-        return service.buscarAvancada(titulo, discente, orientador, municipio, mesorregiao, microrregiao, examinador);
+        return service.buscarAvancada(titulo, discente, orientador, municipio, regiaoIntermediaria, regiaoImediata, examinador);
     }
 
     // Endpoint para o Mapa

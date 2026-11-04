@@ -14,23 +14,23 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
     @Query("SELECT t FROM Tcc t WHERE LOWER(t.municipio) LIKE LOWER(CONCAT('%', :municipio, '%')) AND t.status = 'APROVADO'")
     List<Tcc> findByMunicipioContainingIgnoreCase(@Param("municipio") String municipio);
 
-    @Query("SELECT t FROM Tcc t WHERE LOWER(t.mesorregiao) = LOWER(:mesorregiao) AND t.status = 'APROVADO'")
-    List<Tcc> findByMesorregiaoIgnoreCase(@Param("mesorregiao") String mesorregiao);
+    @Query("SELECT t FROM Tcc t WHERE LOWER(t.regiaoIntermediaria) = LOWER(:regiaoIntermediaria) AND t.status = 'APROVADO'")
+    List<Tcc> findByRegiaoIntermediariaIgnoreCase(@Param("regiaoIntermediaria") String regiaoIntermediaria);
 
-    @Query("SELECT t FROM Tcc t WHERE LOWER(t.microrregiao) = LOWER(:microrregiao) AND t.status = 'APROVADO'")
-    List<Tcc> findByMicrorregiaoIgnoreCase(@Param("microrregiao") String microrregiao);
+    @Query("SELECT t FROM Tcc t WHERE LOWER(t.regiaoImediata) = LOWER(:regiaoImediata) AND t.status = 'APROVADO'")
+    List<Tcc> findByRegiaoImediataIgnoreCase(@Param("regiaoImediata") String regiaoImediata);
 
     @Query("SELECT t.orientador, COUNT(t) FROM Tcc t WHERE t.status = 'APROVADO' GROUP BY t.orientador")
     List<Object[]> countByOrientador();
 
-    // Busca Avançada Dinâmica - Status travado como APROVADO logo no início do WHERE
+    // Busca Avançada Dinâmica - Atualizada para colunas regiao_intermediaria e regiao_imediata
     @Query(value = "SELECT * FROM tcc t WHERE t.status = 'APROVADO' AND " +
             "(:titulo IS NULL OR LOWER(CAST(t.titulo AS TEXT)) LIKE LOWER(CONCAT('%', :titulo, '%'))) AND " +
             "(:discente IS NULL OR LOWER(CAST(t.discente AS TEXT)) LIKE LOWER(CONCAT('%', :discente, '%'))) AND " +
             "(:orientador IS NULL OR LOWER(CAST(t.orientador AS TEXT)) LIKE LOWER(CONCAT('%', :orientador, '%'))) AND " +
             "(:municipio IS NULL OR LOWER(CAST(t.municipio AS TEXT)) LIKE LOWER(CONCAT('%', :municipio, '%'))) AND " +
-            "(:mesorregiao IS NULL OR LOWER(CAST(t.mesorregiao AS TEXT)) LIKE LOWER(CONCAT('%', :mesorregiao, '%'))) AND " +
-            "(:microrregiao IS NULL OR LOWER(CAST(t.microrregiao AS TEXT)) LIKE LOWER(CONCAT('%', :microrregiao, '%'))) AND " +
+            "(:regiaoIntermediaria IS NULL OR LOWER(CAST(t.regiao_intermediaria AS TEXT)) LIKE LOWER(CONCAT('%', :regiaoIntermediaria, '%'))) AND " +
+            "(:regiaoImediata IS NULL OR LOWER(CAST(t.regiao_imediata AS TEXT)) LIKE LOWER(CONCAT('%', :regiaoImediata, '%'))) AND " +
             "(:examinador IS NULL OR (" +
             "   LOWER(CAST(t.examinador1 AS TEXT)) LIKE LOWER(CONCAT('%', :examinador, '%')) OR " +
             "   LOWER(CAST(t.examinador2 AS TEXT)) LIKE LOWER(CONCAT('%', :examinador, '%'))" +
@@ -40,8 +40,8 @@ public interface TccRepository extends JpaRepository<Tcc, Long> {
             @Param("discente") String discente,
             @Param("orientador") String orientador,
             @Param("municipio") String municipio,
-            @Param("mesorregiao") String mesorregiao,
-            @Param("microrregiao") String microrregiao,
+            @Param("regiaoIntermediaria") String regiaoIntermediaria,
+            @Param("regiaoImediata") String regiaoImediata,
             @Param("examinador") String examinador
     );
 

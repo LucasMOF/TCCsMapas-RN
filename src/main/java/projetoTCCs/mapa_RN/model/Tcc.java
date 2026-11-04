@@ -22,8 +22,8 @@ public class Tcc {
     private String examinador1;
     private String examinador2;
     private String municipio;
-    private String mesorregiao;
-    private String microrregiao;
+    private String regiaoIntermediaria;
+    private String regiaoImediata;
 
     @Column(name = "email_contato")
     private String emailContato;
@@ -38,7 +38,7 @@ public class Tcc {
     public Tcc() {
     }
 
-    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String mesorregiao, String microrregiao, String emailContato ,StatusTcc status, String urlPdf) {
+    public Tcc(Long id, String dataDefesa, String discente, String email, String titulo, String orientador, String examinador1, String examinador2, String municipio, String regiaoIntermediaria, String regiaoImediata, String emailContato ,StatusTcc status, String urlPdf) {
         this.id = id;
         this.dataDefesa = dataDefesa;
         this.discente = discente;
@@ -48,8 +48,8 @@ public class Tcc {
         this.examinador1 = examinador1;
         this.examinador2 = examinador2;
         this.municipio = municipio;
-        this.mesorregiao = mesorregiao;
-        this.microrregiao = microrregiao;
+        this.regiaoIntermediaria = regiaoIntermediaria;
+        this.regiaoImediata = regiaoImediata;
         this.emailContato = emailContato;
         this.status = status;
         this.urlPdf = urlPdf;
@@ -62,8 +62,8 @@ public class Tcc {
         if (this.discente != null) this.discente = this.discente.toUpperCase();
         if (this.titulo != null) this.titulo = this.titulo.toUpperCase();
         if (this.orientador != null) this.orientador = this.orientador.toUpperCase();
-        if (this.mesorregiao != null) this.mesorregiao = this.mesorregiao.toUpperCase();
-        if (this.microrregiao != null) this.microrregiao = this.microrregiao.toUpperCase();
+        if (this.regiaoIntermediaria != null) this.regiaoIntermediaria = this.regiaoIntermediaria.toUpperCase();
+        if (this.regiaoImediata != null) this.regiaoImediata = this.regiaoImediata.toUpperCase();
 
         // Lógica Segura para Data
         if (this.dataDefesa != null && !this.dataDefesa.isEmpty()) {
@@ -156,20 +156,20 @@ public class Tcc {
         this.urlPdf = urlPdf;
     }
 
-    public String getMesorregiao() {
-        return mesorregiao;
+    public String getRegiaoIntermediaria() {
+        return regiaoIntermediaria;
     }
 
-    public void setMesorregiao(String mesorregiao) {
-        this.mesorregiao = mesorregiao;
+    public void setRegiaoIntermediaria(String regiaoIntermediaria) {
+        this.regiaoIntermediaria = regiaoIntermediaria;
     }
 
-    public String getMicrorregiao() {
-        return microrregiao;
+    public String getRegiaoImediata() {
+        return regiaoImediata;
     }
 
-    public void setMicrorregiao(String microrregiao) {
-        this.microrregiao = microrregiao;
+    public void setRegiaoImediata(String imediata) {
+        this.regiaoImediata = imediata;
     }
 
     public StatusTcc getStatus() {

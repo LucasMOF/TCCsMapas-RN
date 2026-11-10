@@ -1,3 +1,6 @@
+// Constante global para facilitar manutenções e futuros deploys
+const API_BASE_URL = 'http://localhost:8080/api/tccs';
+
 // Inicialização e Eventos do Mapa
 let isToggleMicro = false;
 
@@ -12,25 +15,36 @@ function leaveMicro(){
         hideName();
     }
 }
-function onload() {
+
+function initMapEvents() {
     const paths = document.getElementsByTagName("path");
     const legends = document.getElementsByClassName("legend-item");
+
     for (let i = 0; i < legends.length; i++) {
         legends[i].addEventListener("mouseover", (element) => toggleMicro(element.target.id), false);
         legends[i].addEventListener("mouseout", () => leaveMicro(), false)
     }
+
     for (let i = 0; i < paths.length; i++) {
-        paths[i].addEventListener("click", (element) => load(element.target.id), false);
+        paths[i].addEventListener("click", (element) => {
+            element.stopPropagation(); // Impede que o clique vaze para o SVG
+            load(element.target.id);
+        }, false);
     }
-    const toggle = document.getElementsByTagName("svg")
-    console.log(toggle)
-    toggle[0].addEventListener("click", (element) => {
-        const elements = document.getElementsByTagName("path");
-        console.log("a")
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].style.filter = "opacity(1)";
-            elements[i].style.transition = "brightness(1)";
-        }})
+
+    const toggle = document.getElementsByTagName("svg");
+    console.log(toggle);
+    if (toggle.length > 0) {
+        toggle[0].addEventListener("click", (element) => {
+            const elements = document.getElementsByTagName("path");
+            console.log("a");
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.filter = "opacity(1)";
+                elements[i].style.transition = "brightness(1)";
+            }
+            hideName(); // Limpa o tooltip ao resetar o mapa
+        });
+    }
 }
 
 // Regras de Negócio e Mecanismos de Busca
@@ -64,7 +78,7 @@ async function executarBuscaAvancada() {
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/api/tccs/busca-avancada?${params.toString()}`);
+        const response = await fetch(`${API_BASE_URL}/busca-avancada?${params.toString()}`);
 
         if (!response.ok) throw new Error(`Erro no servidor: ${response.status}`);
 
@@ -87,7 +101,7 @@ async function executarBuscaAvancada() {
 
 async function load(id) {
     console.log(id)
-    const url = `http://localhost:8080/api/tccs/busca?municipio=${encodeURIComponent(id)}`;
+    const url = `${API_BASE_URL}/busca?municipio=${encodeURIComponent(id)}`;
     try {
         const response = await fetch(url);
 
@@ -318,7 +332,22 @@ let listaRegioesImediatasGlobal = [
     "MOSSORÓ", "PAU DOS FERROS", "AÇU"
 ];
 
+const mapeamentoRegioesIBGE = {
+    "NATAL": [
+        "NATAL", "SANTO ANTÔNIO-PASSA E FICA-NOVA CRUZ", "CANGUARETAMA",
+        "SANTA CRUZ", "JOÃO CÂMARA", "SÃO PAULO DO POTENGI"
+    ],
+    "CAICÓ": [
+        "CAICÓ", "CURRAIS NOVOS"
+    ],
+    "MOSSORÓ": [
+        "MOSSORÓ", "PAU DOS FERROS", "AÇU"
+    ]
+};
+
 document.addEventListener("DOMContentLoaded", () => {
+    initMapEvents();
+
     configurarBuscaCheckbox('busca-municipio', 'lista-checkbox-municipios', 'input-municipio-selecionado');
     configurarBuscaCheckbox('busca-regiao-imediata', 'lista-checkbox-regioes-imediatas', 'input-regiao-imediata-selecionado');
 
@@ -352,6 +381,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const interSelecionada = regiaoIntermediariaEl.value.trim().toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, "");
+            const imediataSelecionada = regiaoImediata.toUpperCase();
+            const imediatasValidas = mapeamentoRegioesIBGE[interSelecionada];
+
+            if (!imediatasValidas || !imediatasValidas.includes(imediataSelecionada)) {
+                alert(`Erro de localização: A região imediata "${imediataSelecionada}" não pertence à região intermediária "${regiaoIntermediariaEl.value}". Por favor, corrija sua seleção.`);
+                return;
+            }
+
             const btnSubmit = e.target.querySelector('button[type="submit"]');
             if (btnSubmit) {
                 btnSubmit.disabled = true;
@@ -361,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const formData = new FormData(e.target);
 
             try {
-                const response = await fetch('http://localhost:8080/api/tccs/cadastrar', {
+                const response = await fetch(`${API_BASE_URL}/cadastrar`, {
                     method: 'POST',
                     body: formData
                 });

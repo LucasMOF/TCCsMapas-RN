@@ -349,12 +349,16 @@ input:focus {
    ========================================================================== */
 path {
     cursor: pointer;
-    transition: filter 0.2s;
+    transition: all 0.3s ease;
+    stroke: #1a1a1a;
+    stroke-width: 0.5px;
 }
 
 path:hover {
     filter: brightness(1.35);
-    opacity: 0.95;
+    opacity: 1;
+    stroke: #ffffff;
+    stroke-width: 1.5px;
 }
 
 #popup {
@@ -370,53 +374,30 @@ path:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-path {
-    stroke: #1a1a1a;
-    stroke-width: 0.5px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-/* ==========================================================================
-   PALETA OFICIAL POR MICRORREGIÃO
-   ========================================================================== */
-
-/* --- MESORREGIÃO OESTE POTIGUAR --- */
-.micro-serra-de-sao-miguel { fill: #c04033; }
-.micro-pau-dos-ferros      { fill: #5c0500; }
-.micro-umarizal            { fill: #bc422a; }
-.micro-chapada-do-apodi    { fill: #e53c29; }
-.micro-medio-oeste         { fill: #ee8a79; }
-.micro-mossoro             { fill: #ef6453; }
-.micro-vale-do-acu         { fill: #fa5838; }
-
-/* --- MESORREGIÃO CENTRAL POTIGUAR --- */
-.micro-macau               { fill: #1a334d; }
-.micro-angicos             { fill: #245277; }
-.micro-serra-de-santana    { fill: #3178e8; }
-.micro-serido-ocidental    { fill: #599cf0; }
-.micro-serido-oriental     { fill: #8cc4f8; }
-
-/* --- MESORREGIÃO AGRESTE POTIGUAR --- */
-.micro-baixa-verde         { fill: #19522b; }
-.micro-borborema-potiguar  { fill: #1c914e; }
-.micro-agreste-potiguar    { fill: #50b680; }
-
-/* --- MESORREGIÃO LESTE POTIGUAR --- */
-.micro-litoral-nordeste    { fill: #a58913; }
-.micro-macaiba             { fill: #d9a016; }
-.micro-natal               { fill: #ebb428; }
-.micro-litoral-sul         { fill: #fceb96; }
-
 svg:has(path:hover) path:not(:hover) {
     opacity: 0.5;
 }
 
-svg path:hover {
-    opacity: 1;
-    stroke: #ffffff;
-    stroke-width: 1.5px;
-}
+/* ==========================================================================
+   PALETA OFICIAL POR REGIÃO GEOGRÁFICA IMEDIATA (IBGE 2017)
+   ========================================================================== */
+
+/* --- REGIÃO INTERMEDIÁRIA DE NATAL (Tons de Verde) --- */
+.micro-natal                   { fill: #2e7d32; }
+.micro-santo-antonio           { fill: #388e3c; }
+.micro-canguaretama            { fill: #4caf50; }
+.micro-santa-cruz              { fill: #66bb6a; }
+.micro-joao-camara             { fill: #81c784; }
+.micro-sao-paulo-do-potengi    { fill: #a5d6a7; }
+
+/* --- REGIÃO INTERMEDIÁRIA DE CAICÓ (Tons de Azul) --- */
+.micro-caico                   { fill: #1565c0; }
+.micro-currais-novos           { fill: #42a5f5; }
+
+/* --- REGIÃO INTERMEDIÁRIA DE MOSSORÓ (Tons de Vermelho) --- */
+.micro-mossoro                 { fill: #b71c1c; }
+.micro-pau-dos-ferros          { fill: #e53935; }
+.micro-acu                     { fill: #ef5350; }
 
 /* ==========================================================================
    LEGENDA DETALHADA DO MAPA
@@ -486,10 +467,9 @@ svg path:hover {
     padding-left: 8px;
 }
 
-.meso-section.oeste h4   { border-left-color: #fa5838; }
-.meso-section.central h4 { border-left-color: #3178e8; }
-.meso-section.agreste h4 { border-left-color: #50b680; }
-.meso-section.leste h4   { border-left-color: #ebb428; }
+.meso-section.natal h4   { border-left-color: #2e7d32; }
+.meso-section.caico h4   { border-left-color: #1565c0; }
+.meso-section.mossoro h4 { border-left-color: #b71c1c; }
 
 .meso-section h4 span {
     display: block;

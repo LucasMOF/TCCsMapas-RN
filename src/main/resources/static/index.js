@@ -44,8 +44,8 @@ async function executarBuscaAvancada() {
         orientador: document.getElementById("orientador").value.trim(),
         examinador: document.getElementById("examinador").value.trim(),
         municipio: document.getElementById("municipio").value.trim(),
-        mesorregiao: document.getElementById("mesorregiao").value.trim(),
-        microrregiao: document.getElementById("microrregiao").value.trim()
+        regiaoIntermediaria: document.getElementById("regiaoIntermediaria").value.trim(),
+        regiaoImediata: document.getElementById("regiaoImediata").value.trim()
     };
 
     const temFiltro = Object.values(filtros).some(valor => valor !== "");
@@ -147,8 +147,8 @@ function createObject(info, id) {
         <p><strong>Discente:</strong> ${info.discente || 'N/A'}</p>
         <p><strong>Orientador:</strong> ${info.orientador || 'N/A'}</p>
         <p><strong>Município:</strong> ${info.municipio || 'N/A'}</p>
-        <p><strong>Mesorregião:</strong> ${info.mesorregiao || 'N/A'}</p>
-        <p><strong>Microrregião:</strong> ${info.microrregiao || 'N/A'}</p>
+        <p><strong>Região Intermediária:</strong> ${info.regiaoIntermediaria || 'N/A'}</p>
+        <p><strong>Região Imediata:</strong> ${info.regiaoImediata || 'N/A'}</p>
         <p><strong>Examinadores:</strong> ${info.examinador1 || ''} / ${info.examinador2 || ''}</p>
     `;
 
@@ -205,12 +205,12 @@ function showName(param) {
     if (!element) return;
 
     const nomeMunicipio = element.id;
-    const nomeMicro = element.getAttribute('data-micro') || '';
-    const nomeMeso = element.getAttribute('data-meso') || '';
+    const nomeImediata = element.getAttribute('data-imediata') || '';
+    const nomeIntermediaria = element.getAttribute('data-intermediaria') || '';
 
     let textoCompleto = nomeMunicipio;
-    if (nomeMicro && nomeMeso) {
-        textoCompleto = `${nomeMunicipio} — ${nomeMicro} (${nomeMeso})`;
+    if (nomeImediata && nomeIntermediaria) {
+        textoCompleto = `${nomeMunicipio} — ${nomeImediata} (${nomeIntermediaria})`;
     }
 
     const position = element.getBoundingClientRect();
@@ -270,7 +270,7 @@ function hideAside() {
 }
 
 function clean() {
-    ["titulo", "discente", "orientador", "examinador", "municipio", "mesorregiao", "microrregiao"].forEach(id => {
+    ["titulo", "discente", "orientador", "examinador", "municipio", "regiaoIntermediaria", "regiaoImediata"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
     });
@@ -280,7 +280,7 @@ function clean() {
 
 let listaCidadesGlobal = [
     "ACARI", "ASSÚ", "AFONSO BEZERRA", "ÁGUA NOVA", "ALEXANDRIA", "ALMINO AFONSO",
-    "ALTO DO RODRIGUES", "ANGICOS", "ANTÔNIO MARTINS", "APODI", "AREIA BRANCA", "ARÊS",
+    "ALTO DO RODRIGUES", "ANGICOS", "ANTÔNIO MARTINS", "APODI", "AREIA BRANCA", "ARÊZ",
     "AUGUSTO SEVERO", "BAÍA FORMOSA", "BARAÚNA", "BARCELONA", "BENTO FERNANDES", "BOA SAÚDE",
     "BODÓ", "BOM JESUS", "BREJINHO", "CAIÇARA DO NORTE", "CAIÇARA DO RIO DO VENTO", "CAICÓ",
     "CAMPO GRANDE", "CAMPO REDONDO", "CANGUARETAMA", "CARAÚBAS", "CARNAÚBA DOS DANTAS",
@@ -294,8 +294,8 @@ let listaCidadesGlobal = [
     "LAGOA D'ANTA", "LAGOA DE PEDRAS", "LAGOA DE VELHOS", "LAGOA NOVA", "LAGOA SALGADA",
     "LAJES", "LAJES PINTADAS", "LUCRÉCIA", "LUÍS GOMES", "MACAÍBA", "MACAU", "MAJOR SALES",
     "MARCELINO VIEIRA", "MARTINS", "MAXARANGUAPE", "MESSIAS TARGINO", "MONTANHAS", "MONTE ALEGRE",
-    "MONTE DAS GAMELEIRAS", "MOSSORÓ", "NATAL", "NÍSIA FLORESTA", "NOVA CRUZ", "OLHO D'ÁGUA DOS BORGES",
-    "OURO BRANCO", "PARANÁ", "PARAÚ", "PARAZINHO", "PARELHAS", "PARNAMIRIM", "PASS A E FICA",
+    "MONTE DAS GAMELEIRAS", "MOSSORÓ", "NATAL", "NÍSIA FLORESTA", "NOVA CRUZ", "OLHO-D'ÁGUA DOS BORGES",
+    "OURO BRANCO", "PARANÁ", "PARAÚ", "PARAZINHO", "PARELHAS", "PARNAMIRIM", "PASSA E FICA",
     "PASSAGEM", "PATI", "PAU DOS FERROS", "PEDRA GRANDE", "PEDRA PRETA", "PEDRO AVELINO",
     "PEDRO VELHO", "PENDÊNCIAS", "PILÕES", "POÇO BRANCO", "PORTALEGRE", "PORTO DO MANGUE",
     "PUREZA", "RAFAEL FERNANDES", "RAFAEL GODEIRO", "RIACHO DA CRUZ", "RIACHO DE SANTANA",
@@ -311,17 +311,16 @@ let listaCidadesGlobal = [
     "TRIUNFO POTIGUAR", "UMARIZAL", "UPANEMA", "VÁRZEA", "VENHA-VER", "VERA CRUZ", "VIÇOSA", "VILA FLOR"
 ];
 
-let listaMicrorregioesGlobal = [
-    "AGRESTE POTIGUAR", "ANGICOS", "BAIXA VERDE", "BORBOREMA POTIGUAR",
-    "CHAPADA DO APODI", "LITORAL NORDESTE", "LITORAL SUL", "MACAÍBA",
-    "MACAU", "MÉDIO OESTE", "MOSSORÓ", "NATAL", "PAU DOS FERROS",
-    "SERIDÓ OCIDENTAL", "SERIDÓ ORIENTAL", "SERRA DE SANTANA",
-    "SERRA DE SÃO MIGUEL", "UMARIZAL", "VALE DO AÇU"
+let listaRegioesImediatasGlobal = [
+    "NATAL", "SANTO ANTÔNIO-PASSA E FICA-NOVA CRUZ", "CANGUARETAMA",
+    "SANTA CRUZ", "JOÃO CÂMARA", "SÃO PAULO DO POTENGI",
+    "CAICÓ", "CURRAIS NOVOS",
+    "MOSSORÓ", "PAU DOS FERROS", "AÇU"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
     configurarBuscaCheckbox('busca-municipio', 'lista-checkbox-municipios', 'input-municipio-selecionado');
-    configurarBuscaCheckbox('busca-microrregiao', 'lista-checkbox-microrregioes', 'input-microrregiao-selecionado');
+    configurarBuscaCheckbox('busca-regiao-imediata', 'lista-checkbox-regioes-imediatas', 'input-regiao-imediata-selecionado');
 
     const form = document.getElementById('formCadastroTcc');
     if (form) {
@@ -329,8 +328,8 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
 
             const titulo = form.querySelector('input[name="titulo"]').value.trim();
-            const mesorregiaoEl = form.querySelector('input[name="mesorregiao"]:checked');
-            const microrregiao = document.getElementById('input-microrregiao-selecionado').value.trim();
+            const regiaoIntermediariaEl = form.querySelector('input[name="regiaoIntermediaria"]:checked');
+            const regiaoImediata = document.getElementById('input-regiao-imediata-selecionado').value.trim();
             const emailContato = form.querySelector('input[name="emailContato"]').value.trim();
 
             if (!titulo || titulo.length < 5) {
@@ -338,13 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            if (!mesorregiaoEl) {
-                alert("A Mesorregião é obrigatória. Selecione uma opção.");
+            if (!regiaoIntermediariaEl) {
+                alert("A Região Intermediária é obrigatória. Selecione uma opção.");
                 return;
             }
 
-            if (!microrregiao) {
-                alert("A Microrregião é obrigatória. Selecione uma opção na lista.");
+            if (!regiaoImediata) {
+                alert("A Região Imediata é obrigatória. Selecione uma opção na lista.");
                 return;
             }
 
@@ -368,12 +367,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (response.ok) {
-                    alert("Cadastrado realizado com sucesso! Você receberá atualizações sobre o status, da curadoria no e-mail informado para noficações. Por favor, lembre-se de verificar também a sua caixa de SPAM ou Lixo Eletrônico.");
+                    alert("Cadastro realizado com sucesso! Você receberá atualizações sobre o status da curadoria no e-mail informado para notificações. Por favor, lembre-se de verificar também a sua caixa de SPAM ou Lixo Eletrônico.");
                     e.target.reset();
                     document.getElementById('input-municipio-selecionado').value = "";
-                    document.getElementById('input-microrregiao-selecionado').value = "";
+                    document.getElementById('input-regiao-imediata-selecionado').value = "";
                     document.getElementById('busca-municipio').value = "";
-                    document.getElementById('busca-microrregiao').value = "";
+                    document.getElementById('busca-regiao-imediata').value = "";
                     toggleCadastro();
                 } else {
                     const erro = await response.text();
@@ -399,8 +398,8 @@ function configurarBuscaCheckbox(idInputTexto, idContainerLista, idInputHidden) 
 
     if (!inputTexto || !containerLista || !inputHidden) return;
 
-    const ehMicrorregiao = idInputTexto.includes('microrregiao');
-    const fonteDados = ehMicrorregiao ? listaMicrorregioesGlobal : listaCidadesGlobal;
+    const ehRegiaoImediata = idInputTexto.includes('regiao-imediata');
+    const fonteDados = ehRegiaoImediata ? listaRegioesImediatasGlobal : listaCidadesGlobal;
 
     inputTexto.addEventListener('input', () => {
         const termo = inputTexto.value.trim().toUpperCase();
